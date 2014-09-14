@@ -73,6 +73,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
     //
     imageFileData = []
     for content : NSURL in contents {
+      println("nsurl: \(content.path)")
       let cachedValues : Dictionary = content.resourceValuesForKeys([NSURLCreationDateKey], error: nil)!
       let fileCreateDate : NSDate = cachedValues[NSURLCreationDateKey] as NSDate
       let source = CGImageSourceCreateWithURL(content, nil)
