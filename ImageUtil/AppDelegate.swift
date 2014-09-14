@@ -99,9 +99,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
   func getDateTime(imageSource:CGImageSource) -> NSDate {
     let uint:UInt = UInt.min
     let metadataAtIndex = CGImageSourceCopyMetadataAtIndex(imageSource, uint, nil)
-    if (nil == metadataAtIndex) {
-      return NSDate()
-    }
     var imageDict : Dictionary  = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil)
     let tiff : AnyObject = imageDict["{TIFF}"]!
     let dateTime : String = tiff["DateTime"] as String!
