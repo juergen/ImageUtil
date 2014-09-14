@@ -67,17 +67,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
   func readMetaDataOfFilesInDirectory(dir:NSURL) {
     //
     let contents : [NSURL] = fm.contentsOfDirectoryAtURL(imageFolder!,
-      includingPropertiesForKeys: ["NSFileCreationDate"],
+      includingPropertiesForKeys: [NSURLCreationDateKey],
       options: .SkipsHiddenFiles,
       error: nil) as [NSURL]
     //
     imageFileData = []
     for content : NSURL in contents {
-      println("NLURL: \(content)")
-      let fileAttributes : NSDictionary = fm.attributesOfItemAtPath(content.path!, error: nil)!
-      println(fileAttributes)
-      let fileCreateDate : NSDate = fileAttributes.fileCreationDate()!
+      let cachedValues : Dictionary = content.resourceValuesForKeys([NSURLCreationDateKey], error: nil)!
+      let fileCreateDate : NSDate = cachedValues[NSURLCreationDateKey] as NSDate
       let source = CGImageSourceCreateWithURL(content, nil)
+      if (nil == source) { continue }
       imageFileData.append([
         "FileName": content.lastPathComponent,
         "ImageDate": getDateTime(source).description,
@@ -105,9 +104,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
     }
     var imageDict : Dictionary  = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil)
     let tiff : AnyObject = imageDict["{TIFF}"]!
-    let dateTime : String = tiff["DateTime"] as String
+    let dateTime : String = tiff["DateTime"] as String!
     return parse(dateTime, format:"yyyy:MM:dd HH:mm:ss")
-    
   }
 
 }
