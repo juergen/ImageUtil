@@ -11,6 +11,8 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
 
   @IBOutlet weak var window: NSWindow!
+  @IBOutlet weak var debugLog: NSTextField!
+  var imageFolder : NSURL?
 
 
   func applicationDidFinishLaunching(aNotification: NSNotification?) {
@@ -21,6 +23,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Insert code here to tear down your application
   }
 
+  @IBAction func selectImageFolder(sender: NSButton) {
+    var openPanel = NSOpenPanel()
+    openPanel.canChooseDirectories = true
+    openPanel.canChooseFiles = false
+    openPanel.canCreateDirectories = false
+    openPanel.allowsMultipleSelection = false
+    
+    if openPanel.runModal() == NSOKButton
+    {
+      imageFolder = openPanel.URLs[0] as? NSURL
+      println("openPanel: \(openPanel.URLs)")
+    }
+    debugLog.stringValue = imageFolder?.description
+  }
 
 }
 
