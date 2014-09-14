@@ -53,12 +53,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
     return numberOfRows
   }
   
-  func tableView(tableView: NSTableView!, objectValueForTableColumn tableColumn: NSTableColumn!, row: Int) -> AnyObject! {
-    //        var string:String = "row " + String(row) + ", Col" + String(tableColumn.identifier)
-    //        return string
-    var newString = getDataArray().objectAtIndex(row).objectForKey(tableColumn.identifier) as String
-    println("row:\(row), tableColumn.identifier:\(tableColumn.identifier), data:\(newString)")
-    return newString
+  func tableView(tableView: NSTableView, viewForTableColumn: NSTableColumn, row: Int) -> NSView {
+    let identifier = viewForTableColumn.identifier
+    var cell = fileListTableView.makeViewWithIdentifier(identifier, owner: self) as NSTableCellView
+    cell.textField.stringValue = getDataArray().objectAtIndex(row).objectForKey(identifier) as String
+    return cell;
   }
   
   func getDataArray () -> NSArray {
