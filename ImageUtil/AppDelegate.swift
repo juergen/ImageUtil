@@ -11,6 +11,7 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate {
 
   var imageFolder : NSURL?
+  var imageFileData : [NSDictionary] = []
   let fm = NSFileManager.defaultManager()
   
   
@@ -41,6 +42,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
       println("openPanel: \(openPanel.URLs)")
       println("imageFolder: \(imageFolder)")
       readMetaDataOfFilesInDirectory(imageFolder!)
+      fileListTableView.reloadData()
       
     }
     debugLog.stringValue = imageFolder?.description
@@ -48,50 +50,62 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
   
   func numberOfRowsInTableView(aTableView: NSTableView!) -> Int
   {
-    //let numberOfRows:Int = 20
-    let numberOfRows:Int = getDataArray().count
-    return numberOfRows
+    return imageFileData.count
   }
   
   func tableView(tableView: NSTableView, viewForTableColumn: NSTableColumn, row: Int) -> NSView {
     let identifier = viewForTableColumn.identifier
     var cell = fileListTableView.makeViewWithIdentifier(identifier, owner: self) as NSTableCellView
-    cell.textField.stringValue = getDataArray().objectAtIndex(row).objectForKey(identifier) as String
+    var value = imageFileData[row].objectForKey(identifier) as? String
+    if (value == nil) {
+      value = "./."
+    }
+    cell.textField.stringValue = value
     return cell;
   }
   
-  func getDataArray () -> NSArray {
-    var dataArray:[NSDictionary] = [["FileName": "Debasis", "Date": "Das"],
-      ["FileName": "Nishant", "Date": "Singh"],
-      ["FileName": "John", "Date": "Doe"],
-      ["FileName": "Jane", "Date": "Doe"],
-      ["FileName": "Mary", "Date": "Jane"]]
-    return dataArray
-  }
-  
   func readMetaDataOfFilesInDirectory(dir:NSURL) {
-    let contents : NSArray = fm.contentsOfDirectoryAtURL(imageFolder!, includingPropertiesForKeys: nil, options: nil, error: nil)!
-    for content in contents {
-      println("\(content)")
+    //
+    let contents : [NSURL] = fm.contentsOfDirectoryAtURL(imageFolder!,
+      includingPropertiesForKeys: ["NSFileCreationDate"],
+      options: .SkipsHiddenFiles,
+      error: nil) as [NSURL]
+    //
+    imageFileData = []
+    for content : NSURL in contents {
+      println("NLURL: \(content)")
+      let fileAttributes : NSDictionary = fm.attributesOfItemAtPath(content.path!, error: nil)!
+      println(fileAttributes)
+      let fileCreateDate : NSDate = fileAttributes.fileCreationDate()!
+      let source = CGImageSourceCreateWithURL(content, nil)
+      imageFileData.append([
+        "FileName": content.lastPathComponent,
+        "ImageDate": getDateTime(source).description,
+        "FileDate": fileCreateDate.description
+        ]
+      )
     }
 
   }
   
   func parse(dateStr:String, format:String="yyyy-MM-dd") -> NSDate {
     var dateFmt = NSDateFormatter()
-    dateFmt.timeZone = NSTimeZone.defaultTimeZone()
+    dateFmt.timeZone = NSTimeZone(forSecondsFromGMT: 0)
     dateFmt.dateFormat = format
-    return dateFmt.dateFromString(dateStr)!
+    let date = dateFmt.dateFromString(dateStr)!
+    //println("\(dateStr) -> \(date)")
+    return date
   }
   
   func getDateTime(imageSource:CGImageSource) -> NSDate {
     let uint:UInt = UInt.min
     let metadataAtIndex = CGImageSourceCopyMetadataAtIndex(imageSource, uint, nil)
+    if (nil == metadataAtIndex) {
+      return NSDate()
+    }
     var imageDict : Dictionary  = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil)
     let tiff : AnyObject = imageDict["{TIFF}"]!
     let dateTime : String = tiff["DateTime"] as String
-    println("TypeName of dateTime = \(_stdlib_getTypeName(dateTime))")
-    println("dateTime:\(dateTime)")
     return parse(dateTime, format:"yyyy:MM:dd HH:mm:ss")
     
   }
