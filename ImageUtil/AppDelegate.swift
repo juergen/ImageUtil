@@ -18,6 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
   @IBOutlet weak var window: NSWindow!
   @IBOutlet weak var debugLog: NSTextField!
   @IBOutlet weak var fileListTableView: NSTableView!
+  @IBOutlet weak var progressIndicator: NSProgressIndicator!
  
 
   func applicationDidFinishLaunching(aNotification: NSNotification?) {
@@ -35,8 +36,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
     openPanel.canCreateDirectories = false
     openPanel.allowsMultipleSelection = false
     
-    if openPanel.runModal() == NSOKButton
-    {
+    if openPanel.runModal() == NSOKButton    {
       imageFolder = openPanel.URLs[0] as? NSURL
       let x : NSURL = openPanel.directoryURL
       println("openPanel: \(openPanel.URLs)")
@@ -48,8 +48,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
     debugLog.stringValue = imageFolder?.description
   }
   
-  func numberOfRowsInTableView(aTableView: NSTableView!) -> Int
-  {
+  func numberOfRowsInTableView(aTableView: NSTableView!) -> Int {
     return imageFileData.count
   }
   
@@ -66,13 +65,21 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
   
   func readMetaDataOfFilesInDirectory(dir:NSURL) {
     //
+    progressIndicator.doubleValue = 1
+    progressIndicator.startAnimation(self)
+    //
+    self.progressIndicator.startAnimation(self)
     let contents : [NSURL] = fm.contentsOfDirectoryAtURL(imageFolder!,
       includingPropertiesForKeys: [NSURLCreationDateKey],
       options: .SkipsHiddenFiles,
       error: nil) as [NSURL]
     //
+    let count = contents.count
     imageFileData = []
-    for content : NSURL in contents {
+    for (index, content : NSURL) in enumerate(contents) {
+      let progress : Double = 100 * (Double(index + 1) / Double(count))
+      println("progress: \(progress)")
+      progressIndicator.doubleValue = progress
       println("nsurl: \(content.path)")
       let cachedValues : Dictionary = content.resourceValuesForKeys([NSURLCreationDateKey], error: nil)!
       let fileCreateDate : NSDate = cachedValues[NSURLCreationDateKey] as NSDate
@@ -85,6 +92,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
         ]
       )
     }
+    progressIndicator.stopAnimation(self)
 
   }
   
@@ -98,10 +106,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
   }
   
   func getDateTime(imageSource:CGImageSource) -> NSDate {
+    // return parse("2000:01:01 00:00:00", format:"yyyy:MM:dd HH:mm:ss")
     let uint:UInt = UInt.min
     let metadataAtIndex = CGImageSourceCopyMetadataAtIndex(imageSource, uint, nil)
     var imageDict : Dictionary  = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil)
-    let tiff : AnyObject = imageDict["{TIFF}"]!
+//    for value in imageDict.keys {
+//      println("value: \(value)")
+//    }
+    var tiff : AnyObject = imageDict["{TIFF}"]! // __NSCFDictionary
+    println("TypeName of tiff = \(_stdlib_getTypeName(tiff))")
+    //
     let dateTime : String = tiff["DateTime"] as String!
     return parse(dateTime, format:"yyyy:MM:dd HH:mm:ss")
   }

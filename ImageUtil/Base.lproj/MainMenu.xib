@@ -16,6 +16,7 @@
             <connections>
                 <outlet property="debugLog" destination="mUR-aB-U2F" id="wnh-je-YnT"/>
                 <outlet property="fileListTableView" destination="x5M-87-DPd" id="TLG-C2-OSL"/>
+                <outlet property="progressIndicator" destination="oAu-1K-twc" id="TcR-sD-6qS"/>
                 <outlet property="selectImageFolder" destination="9nC-yu-HKH" id="DdA-oF-4OU"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
@@ -681,7 +682,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9nC-yu-HKH">
-                        <rect key="frame" x="109" y="415" width="263" height="32"/>
+                        <rect key="frame" x="203" y="411" width="263" height="32"/>
                         <buttonCell key="cell" type="push" title="Wähle einen Ordner mit Bildern aus" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Bug-Ld-UfE">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -691,7 +692,7 @@
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mUR-aB-U2F">
-                        <rect key="frame" x="20" y="392" width="430" height="22"/>
+                        <rect key="frame" x="20" y="363" width="430" height="22"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="debug logger" drawsBackground="YES" id="GWV-9m-Gt5">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -699,13 +700,12 @@
                         </textFieldCell>
                     </textField>
                     <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W5T-Bb-DUC">
-                        <rect key="frame" x="20" y="195" width="635" height="189"/>
+                        <rect key="frame" x="20" y="166" width="635" height="189"/>
                         <clipView key="contentView" ambiguous="YES" misplaced="YES" id="xaR-4Y-Ivn">
                             <rect key="frame" x="1" y="17" width="238" height="117"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="Vqc-Yj-sHD" viewBased="YES" id="x5M-87-DPd">
-                                    <rect key="frame" x="0.0" y="0.0" width="238" height="117"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -775,7 +775,7 @@
                                                 </tableCellView>
                                             </prototypeCellViews>
                                         </tableColumn>
-                                        <tableColumn identifier="FileDate" width="200" minWidth="10" maxWidth="3.4028234663852886e+38" id="yBg-JV-crJ">
+                                        <tableColumn identifier="FileDate" width="224" minWidth="10" maxWidth="3.4028234663852886e+38" id="yBg-JV-crJ">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Datei Datum">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -816,8 +816,8 @@
                             </subviews>
                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </clipView>
-                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="yah-of-1w0">
-                            <rect key="frame" x="1" y="117.7888577580452" width="237.53403091430664" height="16"/>
+                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="0.5" horizontal="YES" id="yah-of-1w0">
+                            <rect key="frame" x="1" y="117.7888577580452" width="238" height="16"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="JdH-Iq-mHt">
@@ -829,6 +829,12 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </tableHeaderView>
                     </scrollView>
+                    <progressIndicator fixedFrame="YES" maxValue="100" indeterminate="YES" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="WxB-kR-nds">
+                        <rect key="frame" x="209" y="392" width="251" height="20"/>
+                    </progressIndicator>
+                    <progressIndicator fixedFrame="YES" maxValue="100" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="oAu-1K-twc">
+                        <rect key="frame" x="209" y="392" width="251" height="20"/>
+                    </progressIndicator>
                 </subviews>
             </view>
             <point key="canvasLocation" x="-229.5" y="127.5"/>
