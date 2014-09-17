@@ -19,7 +19,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
   @IBOutlet weak var debugLog: NSTextField!
   @IBOutlet weak var fileListTableView: NSTableView!
   @IBOutlet weak var progressIndicator: NSProgressIndicator!
- 
+  @IBOutlet weak var dateFromSelector: NSMatrix!
+  @IBOutlet weak var useNewStartDate: NSButton!
+  @IBOutlet weak var newStartDate: NSDatePicker!
+  @IBOutlet weak var hours: NSTextField!
+  @IBOutlet weak var postfix: NSTextField!
+  @IBOutlet weak var appendOriginalName: NSButton!
 
   func applicationDidFinishLaunching(aNotification: NSNotification?) {
     // Insert code here to initialize your application
@@ -45,7 +50,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
       fileListTableView.reloadData()
       
     }
-    debugLog.stringValue = imageFolder?.description
+    let path : String! = imageFolder?.path!
+    debugLog.stringValue = "Pfad: \(path)"
   }
   
   func numberOfRowsInTableView(aTableView: NSTableView!) -> Int {
@@ -55,13 +61,41 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
   func tableView(tableView: NSTableView, viewForTableColumn: NSTableColumn, row: Int) -> NSView {
     let identifier = viewForTableColumn.identifier
     var cell = fileListTableView.makeViewWithIdentifier(identifier, owner: self) as NSTableCellView
-    var value = imageFileData[row].objectForKey(identifier) as? String
-    if (value == nil) {
-      value = "./."
+    var value: AnyObject? = imageFileData[row].objectForKey(identifier)
+//    if (value == nil) {
+//      value = "./."
+//    }
+    if (value is NSDate) {
+      let x = value as NSDate
+      cell.textField.stringValue = x.description
+    } else if (value is String) {
+      cell.textField.stringValue = value as String
+    } else {
+      cell.textField.stringValue = "./."
     }
-    cell.textField.stringValue = value
     return cell;
   }
+  
+  @IBAction func rename(sender: NSButton) {
+    println("dateFromSelector: \(dateFromSelector.selectedRow)")
+    println("useNewStartDate: \(useNewStartDate.state)")
+    println("newStartDate: \(newStartDate.dateValue)")
+    println("hours: \(hours.stringValue)")
+    println("postfix: \(postfix.stringValue)")
+    println("appendOriginalName: \(appendOriginalName.state)")
+    
+    let useImageDate : Bool = (dateFromSelector.selectedRow < 1)
+    var dateStrings : Array = []
+    for image in imageFileData {
+      var counter : Int = 1
+      let date : NSDate = image["ImageDate"] as NSDate
+      var dateString : String = stringFromDate(date) + "\(stringFromDate(date))_\(counter++)"
+      dateStrings.append(dateString)
+      println("\(dateString)")
+    }
+
+  }
+  
   
   func readMetaDataOfFilesInDirectory(dir:NSURL) {
     //
@@ -87,8 +121,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
       if (nil == source) { continue }
       imageFileData.append([
         "FileName": content.lastPathComponent,
-        "ImageDate": getDateTime(source).description,
-        "FileDate": fileCreateDate.description
+        "ImageDate": getDateTime(source),
+        "FileDate": fileCreateDate
         ]
       )
     }
@@ -103,6 +137,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
     let date = dateFmt.dateFromString(dateStr)!
     //println("\(dateStr) -> \(date)")
     return date
+  }
+  
+  func stringFromDate(date:NSDate) -> String {
+    let dateStringFormatter = NSDateFormatter()
+    dateStringFormatter.dateFormat = "yyyy-MM-dd_HH-mm"
+    return dateStringFormatter.stringFromDate(date)
   }
   
   func getDateTime(imageSource:CGImageSource) -> NSDate {
