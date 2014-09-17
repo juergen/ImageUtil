@@ -742,7 +742,7 @@
                                             </prototypeCellViews>
                                         </tableColumn>
                                         <tableColumn identifier="ImageDate" width="200" minWidth="10" maxWidth="3.4028234663852886e+38" id="JAZ-yr-sam">
-                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Bild Datum">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Aufnahme Datum">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -836,7 +836,7 @@
                     <matrix verticalHuggingPriority="750" fixedFrame="YES" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7OF-Th-foF">
                         <rect key="frame" x="114" y="190" width="124" height="38"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        <size key="cellSize" width="124" height="18"/>
+                        <size key="cellSize" width="87" height="18"/>
                         <size key="intercellSpacing" width="4" height="2"/>
                         <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" inset="2" id="dxa-Ie-RUD">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -844,11 +844,11 @@
                         </buttonCell>
                         <cells>
                             <column>
-                                <buttonCell type="radio" title="vom Bild" imagePosition="left" alignment="left" state="on" tag="1" inset="2" id="7zb-8U-eWa">
+                                <buttonCell type="radio" title="Aufnahme" imagePosition="left" alignment="left" state="on" tag="1" inset="2" id="7zb-8U-eWa">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
-                                <buttonCell type="radio" title="von der Datei" imagePosition="left" alignment="left" inset="2" id="zYA-Cf-iCI">
+                                <buttonCell type="radio" title="Datei" imagePosition="left" alignment="left" inset="2" id="zYA-Cf-iCI">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
