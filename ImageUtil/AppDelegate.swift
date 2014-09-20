@@ -108,18 +108,23 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 			error: nil) as [NSURL]
 		//
 		let count = contents.count
-		imageFileData = []
-		for (index, content : NSURL) in enumerate(contents) {
+		imageFileData = [] // used to avoid duplicate new file names
+		for (index, url : NSURL) in enumerate(contents) {
+      // do we have an image?
+      if (!contains(["jped", "jpg"], (url.pathExtension as NSString).lowercaseString)) {
+        continue
+      }
+      println("\(url.pathExtension)")
 			let progress : Double = 100 * (Double(index + 1) / Double(count))
 			//println("progress: \(progress)")
 			progressIndicator.doubleValue = progress
-			//println("nsurl: \(content.path)")
-			let cachedValues : Dictionary = content.resourceValuesForKeys([NSURLCreationDateKey], error: nil)!
+			//println("nsurl: \(url.path)")
+			let cachedValues : Dictionary = url.resourceValuesForKeys([NSURLCreationDateKey], error: nil)!
 			let fileCreateDate : NSDate = cachedValues[NSURLCreationDateKey] as NSDate
-			let source = CGImageSourceCreateWithURL(content, nil)
+			let source = CGImageSourceCreateWithURL(url, nil)
 			if (nil == source) { continue }
 			imageFileData.append([
-				"FileName": content.lastPathComponent,
+				"FileName": url.lastPathComponent,
 				"ImageDate": getDateTime(source),
 				"FileDate": fileCreateDate
 				]
@@ -150,12 +155,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
   func getDateTime(imageSource:CGImageSource) -> NSDate {
     let uint:UInt = UInt.min
     let metadataAtIndex = CGImageSourceCopyMetadataAtIndex(imageSource, uint, nil)
-    var imageDict : Dictionary  = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil)
-    var tiff : AnyObject = imageDict["{TIFF}"]! // __NSCFDictionary
-    //println("TypeName of tiff = \(_stdlib_getTypeName(tiff))")
-    //
-    if let dt = tiff["DateTime"] as? String {
+    if let imageDict : Dictionary  = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) {
+      var tiff : AnyObject = imageDict["{TIFF}"]! // __NSCFDictionary
+      if let dt = tiff["DateTime"] as? String {
         return parse(dt, format:"yyyy:MM:dd HH:mm:ss")
+      }
     }
     return parse("2000:01:01 00:00:00", format:"yyyy:MM:dd HH:mm:ss")
   }
