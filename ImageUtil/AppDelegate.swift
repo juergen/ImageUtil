@@ -63,8 +63,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 		var cell = fileListTableView.makeViewWithIdentifier(identifier, owner: self) as NSTableCellView
 		var value: AnyObject? = imageFileData[row].objectForKey(identifier)
 		if (value! is NSDate) {
-			let x = value as NSDate
-			cell.textField.stringValue = x.description
+			cell.textField.stringValue = stringFromDate(value as NSDate)
 		} else if (value is String) {
 			cell.textField.stringValue = value as String
 		} else {
@@ -85,13 +84,44 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 		var dateStrings : Array<String> = []
 		for image in imageFileData {
 			var counter : Int = 1
-			let date : NSDate = image["ImageDate"] as NSDate
-			var dateString : String = "\(stringFromDate(date))_\(counter++)"
-			while (contains(dateStrings, dateString)) {
-				dateString = "\(stringFromDate(date))_\(counter++)"
+			var date: NSDate {
+				get {
+					if (dateFromSelector.selectedRow == 0) {
+						return image["ImageDate"] as NSDate
+					} else {
+						return image["FileDate"] as NSDate
+					}
+				}
 			}
-			dateStrings.append(dateString)
-			println("\(dateString)")
+			// add postfix
+			var baseName = stringFromDate(date)
+			if (postfix.stringValue != "") {
+				baseName += "_\(postfix.stringValue)"
+			}
+			// ensure name is unique if we have files with same date
+			var newFileName = "\(baseName)_\(counter++)"
+			while (contains(dateStrings, newFileName)) {
+				newFileName = "\(baseName)_\(counter++)"
+			}
+			dateStrings.append(newFileName)
+			// append original name
+			if (appendOriginalName.state == 1) {
+				var nameWOExtension : String! = image["URL"]?.lastPathComponent
+				nameWOExtension = (nameWOExtension as NSString).stringByDeletingPathExtension
+				newFileName += "(\(nameWOExtension))"
+			}
+			// add file extension
+			var ext : String! = image["FileName"]?.pathExtension
+			ext = (ext as NSString).lowercaseString
+			newFileName = "\(newFileName).\(ext)"
+			// rename
+			let oldPath : String! = image["URL"]?.path
+			println("path: \(oldPath)")
+			let basePath : String! = (oldPath as NSString).stringByDeletingLastPathComponent
+			let newPath : String = basePath.stringByAppendingPathComponent(newFileName)
+			println("newPath: \(newPath)")
+			fm.moveItemAtPath(oldPath, toPath: newPath, error: nil)
+			println("renamed to: \(newFileName)")
 		}
 	}
 	
@@ -125,8 +155,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 			if (nil == source) { continue }
 			imageFileData.append([
 				"FileName": url.lastPathComponent,
+				"FileExtension": url.pathExtension,
 				"ImageDate": getDateTime(source),
-				"FileDate": fileCreateDate
+				"FileDate": fileCreateDate,
+				"URL": url
 				]
 			)
 			if (index < 10) {
@@ -137,9 +169,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 		
 	}
 	
-	func parse(dateStr:String, format:String="yyyy-MM-dd") -> NSDate {
+	func parseImageDate(dateStr:String, format:String="yyyy-MM-dd") -> NSDate {
 		var dateFmt = NSDateFormatter()
-		dateFmt.timeZone = NSTimeZone(forSecondsFromGMT: 0)
+		dateFmt.timeZone = NSTimeZone()
 		dateFmt.dateFormat = format
 		let date = dateFmt.dateFromString(dateStr)!
 		//println("\(dateStr) -> \(date)")
@@ -158,10 +190,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 		if let imageDict : Dictionary  = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) {
 			var tiff : AnyObject = imageDict["{TIFF}"]! // __NSCFDictionary
 			if let dt = tiff["DateTime"] as? String {
-				return parse(dt, format:"yyyy:MM:dd HH:mm:ss")
+				return parseImageDate(dt, format:"yyyy:MM:dd HH:mm:ss")
 			}
 		}
-		return parse("2000:01:01 00:00:00", format:"yyyy:MM:dd HH:mm:ss")
+		return parseImageDate("2000:01:01 00:00:00", format:"yyyy:MM:dd HH:mm:ss")
 	}
 	
 }
