@@ -84,6 +84,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 	}
 	
 	@IBAction func rename(sender: NSButton) {
+		//
+		progressIndicator.doubleValue = 1
+		progressIndicator.startAnimation(self)
+		//
 		println("dateFromSelector: \(dateFromSelector.selectedRow)")
 		println("useNewStartDate: \(useNewStartDate.state)")
 		println("newStartDate: \(newStartDate.dateValue)")
@@ -105,8 +109,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 		//
 		var dateStrings : Array<String> = []
 		var renamedImageFileData : [NSDictionary] = []
+		let count = imageFileData.count
+		var current : Int = 1
 		// iterate over images
 		for image in imageFileData {
+			progressIndicator.doubleValue = 100 * (Double(current++) / Double(count))
 			var counter : Int = 1
 			var baseDate: NSDate = image[dateKey] as NSDate
 			var date = baseDate.dateByAddingTimeInterval(offset)
@@ -146,6 +153,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 			println("renamed to: \(newFileName)")
 		}
 		clearTable()
+		progressIndicator.stopAnimation(self)
 	}
 	
 	
@@ -154,7 +162,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 		progressIndicator.doubleValue = 1
 		progressIndicator.startAnimation(self)
 		//
-		self.progressIndicator.startAnimation(self)
 		let contents : [NSURL] = fm.contentsOfDirectoryAtURL(imageFolder!,
 			includingPropertiesForKeys: [NSURLCreationDateKey],
 			options: .SkipsHiddenFiles,
