@@ -118,8 +118,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 				nameWOExtension = (nameWOExtension as NSString).stringByDeletingPathExtension
 				// remove potential previous original file name
 				let start = nameWOExtension.startIndex
-				let end = find(nameWOExtension, "(")
-				nameWOExtension = nameWOExtension[start...end!]
+				if let end = find(nameWOExtension, "(") {
+					nameWOExtension = nameWOExtension[start..<end]
+				}
 				newFileName += "(\(nameWOExtension))"
 			}
 			// add file extension
