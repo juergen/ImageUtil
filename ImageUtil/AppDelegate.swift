@@ -15,7 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 	let fm = NSFileManager.defaultManager()
 	
 	@IBOutlet weak var window: NSWindow!
-	@IBOutlet weak var debugLog: NSTextField!
+	@IBOutlet weak var pathTextField: NSTextField!
 	@IBOutlet weak var fileListTableView: NSTableView!
 	@IBOutlet weak var progressIndicator: NSProgressIndicator!
 	@IBOutlet weak var dateFromSelector: NSMatrix!
@@ -24,6 +24,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 	@IBOutlet weak var hours: NSTextField!
 	@IBOutlet weak var postfix: NSTextField!
 	@IBOutlet weak var appendOriginalName: NSButton!
+	@IBOutlet weak var openRecentMenu: NSMenu!
+	
+	
+	
 	
 	func applicationDidFinishLaunching(aNotification: NSNotification?) {
 		// Insert code here to initialize your application
@@ -33,24 +37,32 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 		// Insert code here to tear down your application
 	}
 	
+	@IBAction func openMenu(sender: NSMenuItem) {
+		selectFolder()
+	}
+	
 	@IBAction func selectImageFolder(sender: NSButton) {
+		selectFolder()
+	}
+	
+	func selectFolder() {
 		var openPanel = NSOpenPanel()
 		openPanel.canChooseDirectories = true
 		openPanel.canChooseFiles = false
 		openPanel.canCreateDirectories = false
 		openPanel.allowsMultipleSelection = false
-		
+		//
+		var pathString : String! = ""
 		if openPanel.runModal() == NSOKButton    {
 			imageFolder = openPanel.URLs[0] as? NSURL
-			let x : NSURL = openPanel.directoryURL
-			println("openPanel: \(openPanel.URLs)")
-			println("imageFolder: \(imageFolder)")
 			readMetaDataOfFilesInDirectory(imageFolder!)
 			fileListTableView.reloadData()
-			
+			pathString = imageFolder?.path!
+		} else {
+			pathString = ""
+			clearTable()
 		}
-		let path : String! = imageFolder?.path!
-		debugLog.stringValue = "Pfad: \(path)"
+		pathTextField.stringValue = "Pfad: \(pathString)"
 	}
 	
 	func numberOfRowsInTableView(aTableView: NSTableView!) -> Int {
@@ -78,9 +90,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 		println("hours: \(hours.stringValue)")
 		println("postfix: \(postfix.stringValue)")
 		println("appendOriginalName: \(appendOriginalName.state)")
-		//
-		println("hours.floatValue: \(hours.floatValue)")
-		println("hours as float: \((hours.stringValue as NSString).floatValue)")
 		//
 		let useImageDate : Bool = (dateFromSelector.selectedRow < 1)
 		let dateKey:String = useImageDate ? "ImageDate" : "FileDate"
@@ -136,8 +145,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 			fm.moveItemAtPath(oldPath, toPath: newPath, error: nil)
 			println("renamed to: \(newFileName)")
 		}
-		imageFileData = []
-		fileListTableView.reloadData()
+		clearTable()
 	}
 	
 	
@@ -182,6 +190,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 		}
 		progressIndicator.stopAnimation(self)
 		
+	}
+	
+	func clearTable() {
+		imageFileData = []
+		fileListTableView.reloadData()
 	}
 	
 	func parseImageDate(dateStr:String, format:String="yyyy-MM-dd") -> NSDate {
