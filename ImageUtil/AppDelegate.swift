@@ -14,7 +14,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 	var imageFileData : [NSDictionary] = []
 	let fm = NSFileManager.defaultManager()
 	
-	
 	@IBOutlet weak var window: NSWindow!
 	@IBOutlet weak var debugLog: NSTextField!
 	@IBOutlet weak var fileListTableView: NSTableView!
@@ -77,23 +76,31 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 		println("useNewStartDate: \(useNewStartDate.state)")
 		println("newStartDate: \(newStartDate.dateValue)")
 		println("hours: \(hours.stringValue)")
-		println("hours as float: \((hours.stringValue as NSString).floatValue)")
 		println("postfix: \(postfix.stringValue)")
 		println("appendOriginalName: \(appendOriginalName.state)")
-		
+		//
+		println("hours.floatValue: \(hours.floatValue)")
+		println("hours as float: \((hours.stringValue as NSString).floatValue)")
+		//
 		let useImageDate : Bool = (dateFromSelector.selectedRow < 1)
+		let dateKey:String = useImageDate ? "ImageDate" : "FileDate"
+		// hours based offset
+		var offset : Double = Double(60 * 60) * Double(hours.floatValue)
+		// add new start date based offset
+		if (useNewStartDate.state == 1 && imageFileData.count > 0) {
+			println("we have a newStartDate!")
+			let dateFirstImage: NSDate = imageFileData[0][dateKey] as NSDate
+			println("dateFirstImage: \(dateFirstImage)")
+			offset += newStartDate.dateValue.timeIntervalSinceDate(dateFirstImage)
+		}
+		//
 		var dateStrings : Array<String> = []
+		var renamedImageFileData : [NSDictionary] = []
+		// iterate over images
 		for image in imageFileData {
 			var counter : Int = 1
-			var date: NSDate {
-				get {
-					if (dateFromSelector.selectedRow == 0) {
-						return image["ImageDate"] as NSDate
-					} else {
-						return image["FileDate"] as NSDate
-					}
-				}
-			}
+			var baseDate: NSDate = image[dateKey] as NSDate
+			var date = baseDate.dateByAddingTimeInterval(offset)
 			// add postfix
 			var baseName = stringFromDate(date)
 			if (postfix.stringValue != "") {
@@ -128,6 +135,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 			fm.moveItemAtPath(oldPath, toPath: newPath, error: nil)
 			println("renamed to: \(newFileName)")
 		}
+		imageFileData = []
+		fileListTableView.reloadData()
 	}
 	
 	
