@@ -77,6 +77,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 		println("useNewStartDate: \(useNewStartDate.state)")
 		println("newStartDate: \(newStartDate.dateValue)")
 		println("hours: \(hours.stringValue)")
+		println("hours as float: \((hours.stringValue as NSString).floatValue)")
 		println("postfix: \(postfix.stringValue)")
 		println("appendOriginalName: \(appendOriginalName.state)")
 		
@@ -108,6 +109,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 			if (appendOriginalName.state == 1) {
 				var nameWOExtension : String! = image["URL"]?.lastPathComponent
 				nameWOExtension = (nameWOExtension as NSString).stringByDeletingPathExtension
+				// remove potential previous original file name
+				let start = nameWOExtension.startIndex
+				let end = find(nameWOExtension, "(")
+				nameWOExtension = nameWOExtension[start...end!]
 				newFileName += "(\(nameWOExtension))"
 			}
 			// add file extension
