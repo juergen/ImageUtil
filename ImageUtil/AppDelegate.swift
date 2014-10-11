@@ -208,9 +208,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 		var dateFmt = NSDateFormatter()
 		dateFmt.timeZone = NSTimeZone()
 		dateFmt.dateFormat = format
-		let date = dateFmt.dateFromString(dateStr)!
+		if let date = dateFmt.dateFromString(dateStr) {
+			return date
+		}
+		return parseImageDate("2000:01:01 00:00:00", format:"yyyy:MM:dd HH:mm:ss")
 		//println("\(dateStr) -> \(date)")
-		return date
 	}
 	
 	func stringFromDate(date:NSDate) -> String {
@@ -223,9 +225,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 		let uint:UInt = UInt.min
 		let metadataAtIndex = CGImageSourceCopyMetadataAtIndex(imageSource, uint, nil)
 		if let imageDict : Dictionary  = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) {
-			var tiff : AnyObject = imageDict["{TIFF}"]! // __NSCFDictionary
-			if let dt = tiff["DateTime"] as? String {
-				return parseImageDate(dt, format:"yyyy:MM:dd HH:mm:ss")
+			if let  tiff : AnyObject = imageDict["{TIFF}"] { // __NSCFDictionary
+				if let dt = tiff["DateTime"] as? String {
+					return parseImageDate(dt, format:"yyyy:MM:dd HH:mm:ss")
+				}
 			}
 		}
 		return parseImageDate("2000:01:01 00:00:00", format:"yyyy:MM:dd HH:mm:ss")

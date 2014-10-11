@@ -43,12 +43,13 @@
     {
       "size" : "512x512",
       "idiom" : "mac",
-      "filename" : "imageUtil_512.png",
+      "filename" : "ImageUtil_Icon.png",
       "scale" : "1x"
     },
     {
-      "idiom" : "mac",
       "size" : "512x512",
+      "idiom" : "mac",
+      "filename" : "ImageUtil_Icon-1.png",
       "scale" : "2x"
     }
   ],

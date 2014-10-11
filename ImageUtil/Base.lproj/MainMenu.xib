@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6246" systemVersion="13F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6246" systemVersion="14A388a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6246"/>
@@ -16,17 +16,13 @@
             <connections>
                 <outlet property="appendOriginalName" destination="tEp-1v-i0h" id="oZl-tm-lqL"/>
                 <outlet property="dateFromSelector" destination="7OF-Th-foF" id="GQz-85-5Rq"/>
-                <outlet property="debugLog" destination="kAl-Rl-tIM" id="WwY-MV-EhC"/>
                 <outlet property="fileListTableView" destination="x5M-87-DPd" id="TLG-C2-OSL"/>
                 <outlet property="hours" destination="lUd-KJ-kYg" id="6AM-U9-47I"/>
                 <outlet property="newStartDate" destination="E7h-Ed-Y5i" id="lnB-Tc-3u6"/>
-                <outlet property="openMenu" destination="IAo-SY-fd9" id="nII-Xr-s2h"/>
-                <outlet property="openRecent" destination="tXI-mr-wws" id="2sS-Dc-h2W"/>
                 <outlet property="openRecentMenu" destination="bib-Uj-vzu" id="zzj-Hy-nmi"/>
                 <outlet property="pathTextField" destination="kAl-Rl-tIM" id="D2b-br-ReU"/>
                 <outlet property="postfix" destination="QbO-EY-QfN" id="xR5-FE-DvJ"/>
                 <outlet property="progressIndicator" destination="oAu-1K-twc" id="TcR-sD-6qS"/>
-                <outlet property="selectImageFolder" destination="9nC-yu-HKH" id="DdA-oF-4OU"/>
                 <outlet property="useNewStartDate" destination="gGI-LV-vUD" id="KBU-KQ-2Bo"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
@@ -146,7 +142,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="669" height="536"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <value key="minSize" type="size" width="669" height="540"/>
             <view key="contentView" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="669" height="536"/>
@@ -168,7 +164,7 @@
                     <matrix verticalHuggingPriority="750" fixedFrame="YES" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7OF-Th-foF">
                         <rect key="frame" x="114" y="190" width="124" height="38"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        <size key="cellSize" width="87" height="18"/>
+                        <size key="cellSize" width="85" height="18"/>
                         <size key="intercellSpacing" width="4" height="2"/>
                         <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" inset="2" id="dxa-Ie-RUD">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -407,7 +403,7 @@
                             <rect key="frame" x="1" y="117.7888577580452" width="238" height="16"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
-                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="JdH-Iq-mHt">
+                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="JdH-Iq-mHt">
                             <rect key="frame" x="224" y="17" width="15" height="102"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
@@ -418,7 +414,7 @@
                     </scrollView>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="-229.5" y="166"/>
+            <point key="canvasLocation" x="-259.5" y="-292"/>
         </window>
     </objects>
 </document>
