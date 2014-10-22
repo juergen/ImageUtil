@@ -211,8 +211,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 		if let date = dateFmt.dateFromString(dateStr) {
 			return date
 		}
-		return parseImageDate("2000:01:01 00:00:00", format:"yyyy:MM:dd HH:mm:ss")
+		return defaultDate()
 		//println("\(dateStr) -> \(date)")
+	}
+	
+	func defaultDate() -> NSDate {
+		return parseImageDate("2000:01:01 00:00:00", format:"yyyy:MM:dd HH:mm:ss")
 	}
 	
 	func stringFromDate(date:NSDate) -> String {
@@ -231,7 +235,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 				}
 			}
 		}
-		return parseImageDate("2000:01:01 00:00:00", format:"yyyy:MM:dd HH:mm:ss")
+		return defaultDate()
 	}
 	
 }
