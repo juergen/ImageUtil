@@ -26,9 +26,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 	@IBOutlet weak var appendOriginalName: NSButton!
 	@IBOutlet weak var openRecentMenu: NSMenu!
 	
-	
-	
-	
 	func applicationDidFinishLaunching(aNotification: NSNotification?) {
 		// Insert code here to initialize your application
 	}
@@ -71,15 +68,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 	
 	func tableView(tableView: NSTableView, viewForTableColumn: NSTableColumn, row: Int) -> NSView {
 		let identifier = viewForTableColumn.identifier
-		var cell = fileListTableView.makeViewWithIdentifier(identifier, owner: self) as NSTableCellView
-		var value: AnyObject? = imageFileData[row].objectForKey(identifier)
+		let cell = fileListTableView.makeViewWithIdentifier(identifier, owner: self) as NSTableCellView
+		let value: AnyObject? = imageFileData[row].objectForKey(identifier)
+		var stringValue: String
 		if (value! is NSDate) {
-			cell.textField.stringValue = stringFromDate(value as NSDate)
+				stringValue = (value as NSDate).formattedString()
 		} else if (value is String) {
-			cell.textField.stringValue = value as String
+			stringValue = value as String
 		} else {
-			cell.textField.stringValue = "./."
+			stringValue = "./."
 		}
+		cell.textField >>- { $0.stringValue = stringValue }
 		return cell;
 	}
 	
@@ -118,7 +117,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 			var baseDate: NSDate = image[dateKey] as NSDate
 			var date = baseDate.dateByAddingTimeInterval(offset)
 			// add postfix
-			var baseName = stringFromDate(date)
+			var baseName = date.formattedString()
 			if (postfix.stringValue != "") {
 				baseName += "_\(postfix.stringValue)"
 			}
@@ -155,7 +154,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 		clearTable()
 		progressIndicator.stopAnimation(self)
 	}
-	
 	
 	func readMetaDataOfFilesInDirectory(dir:NSURL) {
 		//
@@ -204,38 +202,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 		fileListTableView.reloadData()
 	}
 	
-	func parseImageDate(dateStr:String, format:String="yyyy-MM-dd") -> NSDate {
-		var dateFmt = NSDateFormatter()
-		dateFmt.timeZone = NSTimeZone()
-		dateFmt.dateFormat = format
-		if let date = dateFmt.dateFromString(dateStr) {
-			return date
-		}
-		return defaultDate()
-		//println("\(dateStr) -> \(date)")
-	}
-	
-	func defaultDate() -> NSDate {
-		return parseImageDate("2000:01:01 00:00:00", format:"yyyy:MM:dd HH:mm:ss")
-	}
-	
-	func stringFromDate(date:NSDate) -> String {
-		let dateStringFormatter = NSDateFormatter()
-		dateStringFormatter.dateFormat = "yyyy-MM-dd_HH-mm"
-		return dateStringFormatter.stringFromDate(date)
-	}
-	
 	func getDateTime(imageSource:CGImageSource) -> NSDate {
 		let uint:UInt = UInt.min
 		let metadataAtIndex = CGImageSourceCopyMetadataAtIndex(imageSource, uint, nil)
 		if let imageDict : Dictionary  = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) {
-			if let  tiff : AnyObject = imageDict["{TIFF}"] { // __NSCFDictionary
+			if let tiff : AnyObject = imageDict["{TIFF}"] { // __NSCFDictionary
 				if let dt = tiff["DateTime"] as? String {
-					return parseImageDate(dt, format:"yyyy:MM:dd HH:mm:ss")
+					return dt.parseDate("yyyy:MM:dd HH:mm:ss")
 				}
 			}
 		}
-		return defaultDate()
+		return NSDate.defaultDate()
 	}
 	
 }
