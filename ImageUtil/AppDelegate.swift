@@ -141,14 +141,22 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 			// add file extension
 			var ext : String! = image["FileName"]?.pathExtension
 			ext = (ext as NSString).lowercaseString
-			newFileName = "\(newFileName).\(ext)"
+			newFileName = "\(newFileName)"
 			// rename
 			let oldPath : String! = image["URL"]?.path
 			println("path: \(oldPath)")
 			let basePath : String! = (oldPath as NSString).stringByDeletingLastPathComponent
-			let newPath : String = basePath.stringByAppendingPathComponent(newFileName)
-			println("newPath: \(newPath)")
-			fm.moveItemAtPath(oldPath, toPath: newPath, error: nil)
+			let newPathAndBaseName : String = basePath.stringByAppendingPathComponent(newFileName)
+			println("newPath: \(newPathAndBaseName)")
+			// convert to jpg if raw (CR2)
+			if (ext == "cr2") {
+				let source = CGImageSourceCreateWithURL(image["URL"] as CFURL, nil)
+				let destinationPath = newPathAndBaseName + ".jpg"
+				convertToJpg(source, path:destinationPath)
+			} else {
+				let destinationPath = newPathAndBaseName + ".\(ext)"
+				fm.moveItemAtPath(oldPath, toPath: destinationPath, error: nil)
+			}
 			println("renamed to: \(newFileName)")
 		}
 		clearTable()
@@ -169,7 +177,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 		imageFileData = [] // used to avoid duplicate new file names
 		for (index, url : NSURL) in enumerate(contents) {
 			// do we have an image?
-			if (!contains(["jped", "jpg"], (url.pathExtension as NSString).lowercaseString)) {
+			if (!contains(["jped", "jpg", "cr2"], (url.pathExtension as NSString).lowercaseString)) {
 				continue
 			}
 			println("\(url.pathExtension)")
@@ -213,6 +221,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 			}
 		}
 		return NSDate.defaultDate()
+	}
+	
+	func convertToJpg(imageSource:CGImageSource, path:String) -> Bool {
+		let destinationUrl:NSURL = NSURL(fileURLWithPath: path)!
+		let destinationImage = CGImageDestinationCreateWithURL(destinationUrl, kUTTypeJPEG, 1, nil)
+		CGImageDestinationAddImageFromSource(destinationImage, imageSource, 0, nil)
+		let result: Bool = CGImageDestinationFinalize(destinationImage)
+		return result
 	}
 	
 }
