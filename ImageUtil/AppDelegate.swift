@@ -11,7 +11,7 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate {
 	
 	var imageFolder : NSURL?
-	var imageFileData : [NSDictionary] = []
+	var imageFileData = [[String: AnyObject]]()
 	let fm = NSFileManager.defaultManager()
 	
 	@IBOutlet weak var window: NSWindow!
@@ -69,7 +69,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 	func tableView(tableView: NSTableView, viewForTableColumn: NSTableColumn, row: Int) -> NSView {
 		let identifier = viewForTableColumn.identifier
 		let cell = fileListTableView.makeViewWithIdentifier(identifier, owner: self) as NSTableCellView
-		let value: AnyObject? = imageFileData[row].objectForKey(identifier)
+		let value: AnyObject? = imageFileData[row][identifier]
 		var stringValue: String
 		if (value! is NSDate) {
 				stringValue = (value as NSDate).formattedString()
@@ -177,7 +177,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 		imageFileData = [] // used to avoid duplicate new file names
 		for (index, url : NSURL) in enumerate(contents) {
 			// do we have an image?
-			if (!contains(["jped", "jpg", "cr2"], (url.pathExtension as NSString).lowercaseString)) {
+			let pathExtension : String = url.pathExtension ?? ""
+			if !contains(["jpeg", "jpg", "cr2"], pathExtension.lowercaseString) {
 				continue
 			}
 			println("\(url.pathExtension)")
@@ -190,13 +191,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 			let source = CGImageSourceCreateWithURL(url, nil)
 			if (nil == source) { continue }
 			imageFileData.append([
-				"FileName": url.lastPathComponent,
-				"FileExtension": url.pathExtension,
+				"FileName": url.lastPathComponent!,
+				"FileExtension": pathExtension,
 				"ImageDate": getDateTime(source),
 				"FileDate": fileCreateDate,
 				"URL": url
-				]
-			)
+				])
 			if (index < 10) {
 				fileListTableView.reloadData()
 			}
