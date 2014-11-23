@@ -105,9 +105,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 			println("dateFirstImage: \(dateFirstImage)")
 			offset += newStartDate.dateValue.timeIntervalSinceDate(dateFirstImage)
 		}
-		//
+		// dateStrings is used to ensure unique file names
 		var dateStrings : Array<String> = []
-		var renamedImageFileData : [NSDictionary] = []
 		let count = imageFileData.count
 		var current : Int = 1
 		// iterate over images
@@ -122,15 +121,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 				baseName += "_\(postfix.stringValue)"
 			}
 			// ensure name is unique if we have files with same date
-			var newFileName = "\(baseName)_\(counter++)"
+			var newFileName: String = "\(baseName)_\(counter++)"
 			while (contains(dateStrings, newFileName)) {
 				newFileName = "\(baseName)_\(counter++)"
 			}
 			dateStrings.append(newFileName)
 			// append original name
 			if (appendOriginalName.state == 1) {
-				var nameWOExtension : String! = image["URL"]?.lastPathComponent
-				nameWOExtension = (nameWOExtension as NSString).stringByDeletingPathExtension
+				var nameWOExtension : String! = image["URL"]?.lastPathComponent.stringByDeletingPathExtension
 				// remove potential previous original file name
 				let start = nameWOExtension.startIndex
 				if let end = find(nameWOExtension, "(") {
@@ -139,9 +137,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 				newFileName += "(\(nameWOExtension))"
 			}
 			// add file extension
-			var ext : String! = image["FileName"]?.pathExtension
-			ext = (ext as NSString).lowercaseString
-			newFileName = "\(newFileName)"
+			let ext : String! = image["FileName"]?.pathExtension.lowercaseString
 			// rename
 			let oldPath : String! = image["URL"]?.path
 			println("path: \(oldPath)")
