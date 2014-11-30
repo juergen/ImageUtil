@@ -115,17 +115,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 			var counter : Int = 1
 			var baseDate: NSDate = image[dateKey] as NSDate
 			var date = baseDate.dateByAddingTimeInterval(offset)
-			// add postfix
 			var baseName = date.formattedString()
-			if (postfix.stringValue != "") {
-				baseName += "_\(postfix.stringValue)"
-			}
 			// ensure name is unique if we have files with same date
 			var newFileName: String = "\(baseName)_\(counter++)"
 			while (contains(dateStrings, newFileName)) {
 				newFileName = "\(baseName)_\(counter++)"
 			}
 			dateStrings.append(newFileName)
+			// add postfix
+			if (postfix.stringValue != "") {
+				newFileName += "_\(postfix.stringValue)"
+			}
 			// append original name
 			if (appendOriginalName.state == 1) {
 				var nameWOExtension : String! = image["URL"]?.lastPathComponent.stringByDeletingPathExtension
