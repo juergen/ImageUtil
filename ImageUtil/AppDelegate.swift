@@ -209,16 +209,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTableViewDataSource, NSTab
 	func getDateTime(imageSource:CGImageSource) -> NSDate {
 		let uint:UInt = UInt.min
 		let metadataAtIndex = CGImageSourceCopyMetadataAtIndex(imageSource, uint, nil)
-		if let imageDict : Dictionary  = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) {
-			if let tiff : AnyObject = imageDict["{TIFF}"] { // __NSCFDictionary
-				if let dt = tiff["DateTime"] as? String {
-					return dt.parseDate("yyyy:MM:dd HH:mm:ss")
-				}
-			}
-		}
-		return NSDate.defaultDate()
-	}
-	
+        
+        let imageDict: Dictionary? = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) as Dictionary
+        
+        return imageDict <|> "{TIFF}" <| "DateTime" >>- {
+            ($0 as String).parseDate("yyyy:MM:dd HH:mm:ss")
+        } ?? NSDate.defaultDate()
+     }
+
 	func convertToJpg(imageSource:CGImageSource, path:String) -> Bool {
 		let destinationUrl:NSURL = NSURL(fileURLWithPath: path)!
 		let destinationImage = CGImageDestinationCreateWithURL(destinationUrl, kUTTypeJPEG, 1, nil)
