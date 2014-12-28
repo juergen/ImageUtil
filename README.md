@@ -5,11 +5,11 @@ Rename Images in OSX (Swift) experiment.
 
 !! use at your own risk !!
 
-Right now the UI is in German only (sorry).
-
-This app will rename images using
-- the date of the image meta data 
-- or the image file creation date
+This app will: 
+- rename images using
+ - the date of the image meta data 
+ - or the image file creation date
+- convert raw images to jpg on the fly
 
 The date can be recalculated
  - new base date (e.g. if your camera had no date configured)
