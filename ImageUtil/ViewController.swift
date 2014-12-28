@@ -72,7 +72,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 			pathString = ""
 			clearTable()
 		}
-		pathTextField.stringValue = "Pfad: \(pathString)"
+		pathTextField.stringValue = NSLocalizedString("Path: ", comment:"Path label") + pathString
 	}
 	
 	func numberOfRowsInTableView(aTableView: NSTableView!) -> Int {

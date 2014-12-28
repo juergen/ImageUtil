@@ -1,0 +1,144 @@
+/* Class = "NSTextFieldCell"; title = "All"; ObjectID = "0HY-nm-x4K"; */
+"0HY-nm-x4K.title" = "Alle";
+
+/* Class = "NSButtonCell"; title = "Select an image folder"; ObjectID = "0O6-4p-vJm"; */
+"0O6-4p-vJm.title" = "Wähle einen Ordner mit Bildern aus";
+
+/* Class = "NSMenuItem"; title = "ImageUtilNew"; ObjectID = "1Xt-HY-uBw"; */
+"1Xt-HY-uBw.title" = "ImageUtilNew";
+
+/* Class = "NSMenuItem"; title = "Quit ImageUtilNew"; ObjectID = "4sb-4s-VLi"; */
+"4sb-4s-VLi.title" = "Quit ImageUtilNew";
+
+/* Class = "NSTextFieldCell"; title = "adopt (+/-)"; ObjectID = "5Q5-DO-3v2"; */
+"5Q5-DO-3v2.title" = "anpassen (+/-)";
+
+/* Class = "NSTableColumn"; headerCell.title = "Picture Date"; ObjectID = "5ck-Ny-1IV"; */
+"5ck-Ny-1IV.headerCell.title" = "Aufnahme Datum";
+
+/* Class = "NSMenuItem"; title = "About ImageUtilNew"; ObjectID = "5kV-Vb-QxS"; */
+"5kV-Vb-QxS.title" = "About ImageUtilNew";
+
+/* Class = "NSTextFieldCell"; title = "Hours"; ObjectID = "32F-Rm-xqo"; */
+"32F-Rm-xqo.title" = "Stunden";
+
+/* Class = "NSButtonCell"; title = "File"; ObjectID = "51l-Ps-bo6"; */
+"51l-Ps-bo6.title" = "Datei";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "AT0-Mh-EQc"; */
+"AT0-Mh-EQc.title" = "Text Cell";
+
+/* Class = "NSMenu"; title = "Main Menu"; ObjectID = "AYu-sK-qS6"; */
+"AYu-sK-qS6.title" = "Main Menu";
+
+/* Class = "NSMenuItem"; title = "Preferences…"; ObjectID = "BOF-NM-1cW"; */
+"BOF-NM-1cW.title" = "Preferences…";
+
+/* Class = "NSMenu"; title = "Help"; ObjectID = "F2S-fz-NVQ"; */
+"F2S-fz-NVQ.title" = "Help";
+
+/* Class = "NSMenuItem"; title = "ImageUtilNew Help"; ObjectID = "FKE-Sm-Kum"; */
+"FKE-Sm-Kum.title" = "ImageUtilNew Help";
+
+/* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "GOY-TY-KjW"; */
+"GOY-TY-KjW.title" = "Table View Cell";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "I5s-K5-hkg"; */
+"I5s-K5-hkg.title" = "Text Cell";
+
+/* Class = "NSMenuItem"; title = "Open…"; ObjectID = "IAo-SY-fd9"; */
+"IAo-SY-fd9.title" = "Open…";
+
+/* Class = "(null)"; title = "Window"; ObjectID = "IQv-IB-iLA"; */
+"IQv-IB-iLA.title" = "Window";
+
+/* Class = "NSMenuItem"; title = "Show All"; ObjectID = "Kd2-mp-pUS"; */
+"Kd2-mp-pUS.title" = "Show All";
+
+/* Class = "NSMenuItem"; title = "Bring All to Front"; ObjectID = "LE2-aR-0XJ"; */
+"LE2-aR-0XJ.title" = "Bring All to Front";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "MSp-2a-0q8"; */
+"MSp-2a-0q8.title" = "Text Cell";
+
+/* Class = "NSMenuItem"; title = "Services"; ObjectID = "NMo-om-nkz"; */
+"NMo-om-nkz.title" = "Services";
+
+/* Class = "NSMenuItem"; title = "Minimize"; ObjectID = "OY7-WF-poV"; */
+"OY7-WF-poV.title" = "Minimize";
+
+/* Class = "NSMenuItem"; title = "Hide ImageUtilNew"; ObjectID = "Olw-nP-bQN"; */
+"Olw-nP-bQN.title" = "Hide ImageUtilNew";
+
+/* Class = "NSButtonCell"; title = "recalculate starting with"; ObjectID = "R3V-mw-GWL"; */
+"R3V-mw-GWL.title" = "umrechnen starten mit:";
+
+/* Class = "NSMenuItem"; title = "Zoom"; ObjectID = "R4o-n2-Eq4"; */
+"R4o-n2-Eq4.title" = "Zoom";
+
+/* Class = "NSMenu"; title = "Window"; ObjectID = "Td7-aD-5lo"; */
+"Td7-aD-5lo.title" = "Window";
+
+/* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "Vdr-fp-XzO"; */
+"Vdr-fp-XzO.title" = "Hide Others";
+
+/* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "WCV-L0-Xkn"; */
+"WCV-L0-Xkn.title" = "Table View Cell";
+
+/* Class = "NSButtonCell"; title = "Radio"; ObjectID = "WTO-tr-4aH"; */
+"WTO-tr-4aH.title" = "Radio";
+
+/* Class = "NSButtonCell"; title = "Picture"; ObjectID = "Wrs-Mh-kKq"; */
+"Wrs-Mh-kKq.title" = "Aufnahme";
+
+/* Class = "NSMenuItem"; title = "Window"; ObjectID = "aUF-d1-5bR"; */
+"aUF-d1-5bR.title" = "Window";
+
+/* Class = "NSMenu"; title = "File"; ObjectID = "bib-Uj-vzu"; */
+"bib-Uj-vzu.title" = "File";
+
+/* Class = "NSMenuItem"; title = "File"; ObjectID = "dMs-cI-mzQ"; */
+"dMs-cI-mzQ.title" = "File";
+
+/* Class = "NSButtonCell"; title = "Rename Images"; ObjectID = "dkR-6I-umg"; */
+"dkR-6I-umg.title" = "Bilder umbenennen";
+
+/* Class = "NSButtonCell"; title = "append original file name"; ObjectID = "ebN-x3-VaR"; */
+"ebN-x3-VaR.title" = "Orignial Dateiname anhängen";
+
+/* Class = "NSTextFieldCell"; title = "Postfix"; ObjectID = "haP-73-Mqy"; */
+"haP-73-Mqy.title" = "Zusatz";
+
+/* Class = "NSMenu"; title = "Services"; ObjectID = "hz9-B4-Xy5"; */
+"hz9-B4-Xy5.title" = "Services";
+
+/* Class = "NSTextFieldCell"; title = "Date"; ObjectID = "jMa-2k-9z1"; */
+"jMa-2k-9z1.title" = "Datum";
+
+/* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "k87-5x-cZ2"; */
+"k87-5x-cZ2.title" = "Table View Cell";
+
+/* Class = "NSMenu"; title = "Open Recent"; ObjectID = "oas-Oc-fiZ"; */
+"oas-Oc-fiZ.title" = "Open Recent";
+
+/* Class = "NSMenuItem"; title = "Open Recent"; ObjectID = "tXI-mr-wws"; */
+"tXI-mr-wws.title" = "Open Recent";
+
+/* Class = "NSTextFieldCell"; title = "Path:"; ObjectID = "tgv-Nr-zU4"; */
+"tgv-Nr-zU4.title" = "Pfad: ";
+
+/* Class = "NSMenu"; title = "ImageUtilNew"; ObjectID = "uQy-DD-JDr"; */
+"uQy-DD-JDr.title" = "ImageUtilNew";
+
+/* Class = "NSMenuItem"; title = "Clear Menu"; ObjectID = "vNY-rz-j42"; */
+"vNY-rz-j42.title" = "Clear Menu";
+
+/* Class = "NSMenuItem"; title = "Help"; ObjectID = "wpr-3q-Mcd"; */
+"wpr-3q-Mcd.title" = "Help";
+
+/* Class = "NSTableColumn"; headerCell.title = "File Date"; ObjectID = "x4j-8O-2X2"; */
+"x4j-8O-2X2.headerCell.title" = "Datei Datum";
+
+/* Class = "NSTableColumn"; headerCell.title = "Name"; ObjectID = "xok-Rg-2aW"; */
+"xok-Rg-2aW.headerCell.title" = "Name";
+
