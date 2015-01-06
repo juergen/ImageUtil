@@ -184,7 +184,8 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 					self.fm.moveItemAtPath(oldPath, toPath: destinationPath, error: nil)
 					newPath = destinationPath
 				}
-				let newUrl:NSURL = NSURL(string: newPath)!
+				// fileURLWithPath handle spaces in newPath
+				let newUrl:NSURL = NSURL(fileURLWithPath: newPath)!
 				renamedImageFileData.append([
 					"FileName": newUrl.lastPathComponent!,
 					"FileExtension": newUrl.pathExtension!,
