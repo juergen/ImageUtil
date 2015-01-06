@@ -184,33 +184,40 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		//
 		let count = contents.count
 		imageFileData = [] // used to avoid duplicate new file names
-		for (index, url : NSURL) in enumerate(contents) {
-			// do we have an image?
-			let pathExtension : String = url.pathExtension ?? ""
-			if !contains(["jpeg", "jpg", "cr2"], pathExtension.lowercaseString) {
-				continue
+		// do not block UI
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
+			for (index, url : NSURL) in enumerate(contents) {
+				// do we have an image?
+				let pathExtension : String = url.pathExtension ?? ""
+				if !contains(["jpeg", "jpg", "cr2"], pathExtension.lowercaseString) {
+					continue
+				}
+				let progress : Double = 100 * (Double(index + 1) / Double(count))
+				let progressFormatted: String  = progress.format(".1")
+				println("\(progressFormatted)% \(url.lastPathComponent!)")
+				self.progressIndicator.doubleValue = progress
+				//println("nsurl: \(url.path)")
+				let cachedValues : Dictionary = url.resourceValuesForKeys([NSURLCreationDateKey], error: nil)!
+				let fileCreateDate : NSDate = cachedValues[NSURLCreationDateKey] as NSDate
+				let source = CGImageSourceCreateWithURL(url, nil)
+				if (nil == source) { continue }
+				self.imageFileData.append([
+					"FileName": url.lastPathComponent!,
+					"FileExtension": pathExtension,
+					"ImageDate": self.getDateTime(source),
+					"FileDate": fileCreateDate,
+					"URL": url
+					])
+				if (index < 10) {
+					//self.fileListTableView.reloadData()
+				}
 			}
-			println("\(url.pathExtension)")
-			let progress : Double = 100 * (Double(index + 1) / Double(count))
-			//println("progress: \(progress)")
-			progressIndicator.doubleValue = progress
-			//println("nsurl: \(url.path)")
-			let cachedValues : Dictionary = url.resourceValuesForKeys([NSURLCreationDateKey], error: nil)!
-			let fileCreateDate : NSDate = cachedValues[NSURLCreationDateKey] as NSDate
-			let source = CGImageSourceCreateWithURL(url, nil)
-			if (nil == source) { continue }
-			imageFileData.append([
-				"FileName": url.lastPathComponent!,
-				"FileExtension": pathExtension,
-				"ImageDate": getDateTime(source),
-				"FileDate": fileCreateDate,
-				"URL": url
-				])
-			if (index < 10) {
-				fileListTableView.reloadData()
-			}
-		}
-		progressIndicator.stopAnimation(self)
+			dispatch_async(dispatch_get_main_queue(), {
+				self.fileListTableView.reloadData()
+				self.progressIndicator.stopAnimation(self)
+				return
+			})
+		})
 		
 	}
 	
