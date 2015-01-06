@@ -100,6 +100,8 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		progressIndicator.doubleValue = 1
 		progressIndicator.startAnimation(self)
 		//
+		var renamedImageFileData = [[String: AnyObject]]()
+		//
 		println("dateFromSelector: \(dateFromSelector.selectedRow)")
 		println("useNewStartDate: \(useNewStartDate.state)")
 		println("newStartDate: \(newStartDate.dateValue)")
@@ -123,7 +125,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		let count = imageFileData.count
 		var current : Int = 1
 		// iterate over images
-		for image in imageFileData {
+		for image:[String: AnyObject] in imageFileData {
 			progressIndicator.doubleValue = 100 * (Double(current++) / Double(count))
 			var counter : Int = 1
 			var baseDate: NSDate = image[dateKey] as NSDate
@@ -157,18 +159,42 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 			let basePath : String! = (oldPath as NSString).stringByDeletingLastPathComponent
 			let newPathAndBaseName : String = basePath.stringByAppendingPathComponent(newFileName)
 			println("newPath: \(newPathAndBaseName)")
+			//
+			var newPath:String
+			var newFileDate:NSDate = image["FileDate"] as NSDate
 			// convert to jpg if raw (CR2)
 			if (ext == "cr2") {
+				// added original file to result list as it remains in folder
+				renamedImageFileData.append([
+					"FileName": image["FileName"]!,
+					"FileExtension": image["FileExtension"]!,
+					"ImageDate": image["ImageDate"]!,
+					"FileDate": image["FileDate"]!,
+					"URL": image["URL"]!
+					])
 				let source = CGImageSourceCreateWithURL(image["URL"] as CFURL, nil)
-				let destinationPath = newPathAndBaseName + ".jpg"
+				let destinationPath = "\(newPathAndBaseName).jpg"
 				convertToJpg(source, path:destinationPath)
+				newPath = destinationPath
+				// we just created the new file
+				newFileDate = NSDate()
 			} else {
-				let destinationPath = newPathAndBaseName + ".\(ext)"
+				let destinationPath = "\(newPathAndBaseName).\(ext)"
 				fm.moveItemAtPath(oldPath, toPath: destinationPath, error: nil)
+				newPath = destinationPath
 			}
+			let newUrl:NSURL = NSURL(string: newPath)!
+			renamedImageFileData.append([
+				"FileName": newUrl.lastPathComponent!,
+				"FileExtension": newUrl.pathExtension!,
+				"ImageDate": image["ImageDate"]!,
+				"FileDate": newFileDate,
+				"URL": newUrl
+				])
 			println("renamed to: \(newFileName)")
 		}
-		clearTable()
+		imageFileData = renamedImageFileData
+		fileListTableView.reloadData()
 		progressIndicator.stopAnimation(self)
 	}
 	
