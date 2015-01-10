@@ -144,13 +144,15 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 				}
 				// append original name
 				if (self.appendOriginalName.state == 1) {
-					var nameWOExtension : String! = image["URL"]?.lastPathComponent.stringByDeletingPathExtension
-					// remove potential previous original file name
-					let start = nameWOExtension.startIndex
-					if let end = find(nameWOExtension, "(") {
-						nameWOExtension = nameWOExtension[start..<end]
+					if let nameWOExtension : String = image["URL"]?.lastPathComponent.stringByDeletingPathExtension {
+						// remove potential previous original file name
+						let start = nameWOExtension.startIndex
+						if let end = find(nameWOExtension, "(") {
+							newFileName += "(\(nameWOExtension[start..<end]))"
+						} else {
+							newFileName += "(\(nameWOExtension))"
+						}
 					}
-					newFileName += "(\(nameWOExtension))"
 				}
 				// add file extension
 				let ext : String! = image["FileName"]?.pathExtension.lowercaseString
@@ -225,7 +227,12 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 				}
 				let progress : Double = 100 * (Double(index + 1) / Double(count))
 				let progressFormatted: String  = progress.format(".1")
-				println("\(progressFormatted)% \(url.lastPathComponent!)")
+				// do we have a filename?
+				let fileName : String = url.lastPathComponent ?? ""
+				if fileName == "" {
+					continue
+				}
+				println("\(progressFormatted)% \(fileName)")
 				self.progressIndicator.doubleValue = progress
 				//println("nsurl: \(url.path)")
 				let cachedValues : Dictionary = url.resourceValuesForKeys([NSURLCreationDateKey], error: nil)!
@@ -233,7 +240,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 				let source = CGImageSourceCreateWithURL(url, nil)
 				if (nil == source) { continue }
 				self.imageFileData.append([
-					"FileName": url.lastPathComponent!,
+					"FileName": fileName,
 					"FileExtension": pathExtension,
 					"ImageDate": self.getDateTime(source),
 					"FileDate": fileCreateDate,
