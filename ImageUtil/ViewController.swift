@@ -191,17 +191,18 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 					self.fm.moveItemAtPath(oldPath, toPath: destinationPath, error: nil)
 					newPath = destinationPath
 				}
-				// fileURLWithPath handle spaces in newPath
-				let newUrl:NSURL = NSURL(fileURLWithPath: newPath)!
-				let renameImageFile = ImageFileMetaData(
-					name:newUrl.lastPathComponent!,
-					ext:newUrl.pathExtension!,
-					imageDate:image.imageDate,
-					fileDate: newFileDate,
-					url: newUrl
-				)
-				renamedImageFileData.append(renameImageFile)
 				println("renamed to: \(newFileName)")
+				// fileURLWithPath handle spaces in newPath
+				if let newUrl:NSURL = NSURL(fileURLWithPath: newPath) {
+					let renameImageFile = ImageFileMetaData(
+						name:newUrl.lastPathComponent!,
+						ext:newUrl.pathExtension!,
+						imageDate:image.imageDate,
+						fileDate: newFileDate,
+						url: newUrl
+					)
+					renamedImageFileData.append(renameImageFile)
+				}
 			}
 			dispatch_async(dispatch_get_main_queue(), {
 				self.imageFileData = renamedImageFileData
@@ -235,7 +236,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 				let progressFormatted: String  = progress.format(".1")
 				// do we have a filename?
 				let fileName : String = url.lastPathComponent ?? ""
-				if fileName == "" {
+				if fileName.isEmpty {
 					continue
 				}
 				println("\(progressFormatted)% \(fileName)")
