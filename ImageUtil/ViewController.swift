@@ -24,7 +24,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 	}
 	
 	var imageFolder : NSURL?
-	var imageFileData = [[String: AnyObject]]()
+	var imageFileData = [ImageFileMetaData]()
 	let fm = NSFileManager.defaultManager()
 	
 	//@IBOutlet weak var window: NSWindow!
@@ -82,7 +82,17 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 	func tableView(tableView: NSTableView, viewForTableColumn: NSTableColumn, row: Int) -> NSView {
 		let identifier = viewForTableColumn.identifier
 		let cell = fileListTableView.makeViewWithIdentifier(identifier, owner: self) as NSTableCellView
-		let value: AnyObject? = imageFileData[row][identifier]
+		let file : ImageFileMetaData = imageFileData[row]
+		var value: AnyObject?
+		switch identifier {
+		case "FileName" :
+			value = file.name
+		case "ImageDate" :
+			value = file.imageDate
+		case "FileDate" :
+			value = file.fileDate
+		default: "./."
+		}
 		var stringValue: String
 		if (value! is NSDate) {
 			stringValue = (value as NSDate).formattedString()
@@ -92,7 +102,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 			stringValue = "./."
 		}
 		cell.textField >>- { $0.stringValue = stringValue }
-		return cell;
+		return cell
 	}
 	
 	@IBAction func rename(sender: NSButton) {
@@ -100,7 +110,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		progressIndicator.doubleValue = 1
 		progressIndicator.startAnimation(self)
 		//
-		var renamedImageFileData = [[String: AnyObject]]()
+		var renamedImageFileData = [ImageFileMetaData]()
 		//
 		println("dateFromSelector: \(dateFromSelector.selectedRow)")
 		println("useNewStartDate: \(useNewStartDate.state)")
@@ -116,7 +126,8 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		// add new start date based offset
 		if (useNewStartDate.state == 1 && imageFileData.count > 0) {
 			println("we have a newStartDate!")
-			let dateFirstImage: NSDate = imageFileData[0][dateKey] as NSDate
+			let firstElement = imageFileData[0]
+			let dateFirstImage: NSDate = useImageDate ? firstElement.imageDate : firstElement.fileDate
 			println("dateFirstImage: \(dateFirstImage)")
 			offset += newStartDate.dateValue.timeIntervalSinceDate(dateFirstImage)
 		}
@@ -126,10 +137,10 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		var current : Int = 1
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
 			// iterate over images
-			for image:[String: AnyObject] in self.imageFileData {
+			for image:ImageFileMetaData in self.imageFileData {
 				self.progressIndicator.doubleValue = 100 * (Double(current++) / Double(count))
 				var counter : Int = 1
-				var baseDate: NSDate = image[dateKey] as NSDate
+				var baseDate: NSDate = useImageDate ? image.imageDate : image.fileDate
 				var date = baseDate.dateByAddingTimeInterval(offset)
 				var baseName = date.formattedString()
 				// ensure name is unique if we have files with same date
@@ -144,7 +155,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 				}
 				// append original name
 				if (self.appendOriginalName.state == 1) {
-					if let nameWOExtension : String = image["URL"]?.lastPathComponent.stringByDeletingPathExtension {
+					if let nameWOExtension : String = image.url.lastPathComponent?.stringByDeletingPathExtension {
 						// remove potential previous original file name
 						let start = nameWOExtension.startIndex
 						if let end = find(nameWOExtension, "(") {
@@ -155,27 +166,21 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 					}
 				}
 				// add file extension
-				let ext : String! = image["FileName"]?.pathExtension.lowercaseString
+				let ext : String! = image.name.pathExtension.lowercaseString
 				// rename
-				let oldPath : String! = image["URL"]?.path
+				let oldPath : String! = image.url.path
 				println("path: \(oldPath)")
 				let basePath : String! = (oldPath as NSString).stringByDeletingLastPathComponent
 				let newPathAndBaseName : String = basePath.stringByAppendingPathComponent(newFileName)
 				println("newPath: \(newPathAndBaseName)")
 				//
 				var newPath:String
-				var newFileDate:NSDate = image["FileDate"] as NSDate
+				var newFileDate:NSDate = image.fileDate
 				// convert to jpg if raw (CR2)
 				if (ext == "cr2") {
 					// added original file to result list as it remains in folder
-					renamedImageFileData.append([
-						"FileName": image["FileName"]!,
-						"FileExtension": image["FileExtension"]!,
-						"ImageDate": image["ImageDate"]!,
-						"FileDate": image["FileDate"]!,
-						"URL": image["URL"]!
-						])
-					let source = CGImageSourceCreateWithURL(image["URL"] as CFURL, nil)
+					renamedImageFileData.append(image)
+					let source = CGImageSourceCreateWithURL(image.url as CFURL, nil)
 					let destinationPath = "\(newPathAndBaseName).jpg"
 					self.convertToJpg(source, path:destinationPath)
 					newPath = destinationPath
@@ -188,13 +193,14 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 				}
 				// fileURLWithPath handle spaces in newPath
 				let newUrl:NSURL = NSURL(fileURLWithPath: newPath)!
-				renamedImageFileData.append([
-					"FileName": newUrl.lastPathComponent!,
-					"FileExtension": newUrl.pathExtension!,
-					"ImageDate": image["ImageDate"]!,
-					"FileDate": newFileDate,
-					"URL": newUrl
-					])
+				let renameImageFile = ImageFileMetaData(
+					name:newUrl.lastPathComponent!,
+					ext:newUrl.pathExtension!,
+					imageDate:image.imageDate,
+					fileDate: newFileDate,
+					url: newUrl
+				)
+				renamedImageFileData.append(renameImageFile)
 				println("renamed to: \(newFileName)")
 			}
 			dispatch_async(dispatch_get_main_queue(), {
@@ -239,13 +245,14 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 				let fileCreateDate : NSDate = cachedValues[NSURLCreationDateKey] as NSDate
 				let source = CGImageSourceCreateWithURL(url, nil)
 				if (nil == source) { continue }
-				self.imageFileData.append([
-					"FileName": fileName,
-					"FileExtension": pathExtension,
-					"ImageDate": self.getDateTime(source),
-					"FileDate": fileCreateDate,
-					"URL": url
-					])
+				let imageFile = ImageFileMetaData(
+					name:fileName,
+					ext:pathExtension,
+					imageDate:self.getDateTime(source),
+					fileDate: fileCreateDate,
+					url: url
+				)
+				self.imageFileData.append(imageFile)
 				if (index < 10) {
 					//self.fileListTableView.reloadData()
 				}

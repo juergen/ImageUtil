@@ -7,3 +7,13 @@
 //
 
 import Foundation
+
+struct ImageFileMetaData {
+	
+	var name:String
+	var ext:String // extension
+	var imageDate:NSDate // date of image meta data
+	var fileDate:NSDate // date of file
+	var url:NSURL
+
+}
