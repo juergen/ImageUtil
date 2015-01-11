@@ -55,6 +55,11 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		selectFolder()
 	}
 	
+	@IBAction func generateSlidesMenu(sender: NSButton) {
+		generateSlides()
+	}
+	
+	
 	func selectFolder() {
 		var openPanel = NSOpenPanel()
 		openPanel.canChooseDirectories = true
@@ -138,7 +143,6 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
 			// iterate over images
 			for image:ImageFileMetaData in self.imageFileData {
-				self.progressIndicator.doubleValue = 100 * (Double(current++) / Double(count))
 				var counter : Int = 1
 				var baseDate: NSDate = useImageDate ? image.imageDate : image.fileDate
 				var date = baseDate.dateByAddingTimeInterval(offset)
@@ -182,7 +186,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 					renamedImageFileData.append(image)
 					let source = CGImageSourceCreateWithURL(image.url as CFURL, nil)
 					let destinationPath = "\(newPathAndBaseName).jpg"
-					self.convertToJpg(source, path:destinationPath)
+					Utils.convertToJpg(source, path:destinationPath)
 					newPath = destinationPath
 					// we just created the new file
 					newFileDate = NSDate()
@@ -203,6 +207,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 					)
 					renamedImageFileData.append(renameImageFile)
 				}
+				self.progressIndicator.doubleValue = 100 * (Double(current++) / Double(count))
 			}
 			dispatch_async(dispatch_get_main_queue(), {
 				self.imageFileData = renamedImageFileData
@@ -240,7 +245,6 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 					continue
 				}
 				println("\(progressFormatted)% \(fileName)")
-				self.progressIndicator.doubleValue = progress
 				//println("nsurl: \(url.path)")
 				let cachedValues : Dictionary = url.resourceValuesForKeys([NSURLCreationDateKey], error: nil)!
 				let fileCreateDate : NSDate = cachedValues[NSURLCreationDateKey] as NSDate
@@ -249,7 +253,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 				let imageFile = ImageFileMetaData(
 					name:fileName,
 					ext:pathExtension,
-					imageDate:self.getDateTime(source),
+					imageDate:Utils.getDateTime(source),
 					fileDate: fileCreateDate,
 					url: url
 				)
@@ -257,6 +261,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 				if (index < 10) {
 					//self.fileListTableView.reloadData()
 				}
+				self.progressIndicator.doubleValue = progress
 			}
 			dispatch_async(dispatch_get_main_queue(), {
 				self.fileListTableView.reloadData()
@@ -272,24 +277,39 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		fileListTableView.reloadData()
 	}
 	
-	func getDateTime(imageSource:CGImageSource) -> NSDate {
-		let uint:UInt = UInt.min
-		let metadataAtIndex = CGImageSourceCopyMetadataAtIndex(imageSource, uint, nil)
-		
-		let imageDict: Dictionary? = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) as Dictionary
-		
-		return imageDict <|> "{TIFF}" <| "DateTime" >>- {
-			($0 as String).parseDate("yyyy:MM:dd HH:mm:ss")
-			} ?? NSDate.defaultDate()
+	func generateSlides() {
+		let count = imageFileData.count
+		if (count < 1) {
+			return
+		}
+		var current : Int = 1
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
+			// generate slides folder
+			var slidesDir : String
+			if let parentPath : String = self.imageFolder?.path {
+				if !Utils.createOrEmptyDirectory("\(parentPath)/slides") { return }
+				slidesDir = "\(parentPath)/slides"
+			} else {
+				return
+			}
+			// iterate over images
+			for image:ImageFileMetaData in self.imageFileData {
+				Utils.resizeImage(image.url, max: 900, destinationPath:"\(slidesDir)/\(image.name)")
+				println("resized \(slidesDir)/\(image.name)")
+				// update progress bar
+				self.progressIndicator.doubleValue = 100 * (Double(current++) / Double(count))
+			}
+			Utils.renameToNumberedFiles(slidesDir, filterExtension: "jpg")
+			//
+			dispatch_async(dispatch_get_main_queue(), {
+				self.fileListTableView.reloadData()
+				self.progressIndicator.stopAnimation(self)
+				return
+			})
+		})
 	}
 	
-	func convertToJpg(imageSource:CGImageSource, path:String) -> Bool {
-		let destinationUrl:NSURL = NSURL(fileURLWithPath: path)!
-		let destinationImage = CGImageDestinationCreateWithURL(destinationUrl, kUTTypeJPEG, 1, nil)
-		CGImageDestinationAddImageFromSource(destinationImage, imageSource, 0, nil)
-		let result: Bool = CGImageDestinationFinalize(destinationImage)
-		return result
-	}
+	
 
 
 }

@@ -77,6 +77,12 @@
                                                 </items>
                                             </menu>
                                         </menuItem>
+                                        <menuItem title="Generate Slides" id="8FX-71-6Nv">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="generateSlidesMenu:" target="Ady-hI-5gd" id="z7L-M8-OWB"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>
@@ -294,7 +300,7 @@
                                     <rect key="frame" x="1" y="117.7888577580452" width="238" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="ysn-wJ-qPN">
+                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="ysn-wJ-qPN">
                                     <rect key="frame" x="224" y="17" width="15" height="102"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>

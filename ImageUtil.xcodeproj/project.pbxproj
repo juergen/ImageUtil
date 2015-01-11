@@ -17,6 +17,7 @@
 		8F9C37EB19C584DE00BDD4D3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F9C37EA19C584DE00BDD4D3 /* Images.xcassets */; };
 		8F9C37FA19C584DE00BDD4D3 /* ImageUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F9C37F919C584DE00BDD4D3 /* ImageUtilTests.swift */; };
 		8FBF78271A6156C100F51264 /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF78261A6156C100F51264 /* Structs.swift */; };
+		8FBF78291A62BA9000F51264 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF78281A62BA9000F51264 /* Utils.swift */; };
 		8FFC17A91A50476300C00A71 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FFC17A81A50476300C00A71 /* ViewController.swift */; };
 		8FFC17AD1A50480F00C00A71 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FFC17AC1A50480F00C00A71 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
@@ -48,6 +49,7 @@
 		8F9C37F819C584DE00BDD4D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8F9C37F919C584DE00BDD4D3 /* ImageUtilTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUtilTests.swift; sourceTree = "<group>"; };
 		8FBF78261A6156C100F51264 /* Structs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Structs.swift; sourceTree = "<group>"; };
+		8FBF78281A62BA9000F51264 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		8FFC17A81A50476300C00A71 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		8FFC17AC1A50480F00C00A71 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -94,6 +96,7 @@
 				8F92F9C919FAA0070010892F /* Operators.swift */,
 				8F92F9CB19FAA00F0010892F /* Optional.swift */,
 				8F92F9CD19FAA36F0010892F /* Extensions.swift */,
+				8FBF78281A62BA9000F51264 /* Utils.swift */,
 				8FBF78261A6156C100F51264 /* Structs.swift */,
 				8FFC17AC1A50480F00C00A71 /* AppDelegate.swift */,
 				8FFC17A81A50476300C00A71 /* ViewController.swift */,
@@ -238,6 +241,7 @@
 				8FBF78271A6156C100F51264 /* Structs.swift in Sources */,
 				8FFC17AD1A50480F00C00A71 /* AppDelegate.swift in Sources */,
 				8FFC17A91A50476300C00A71 /* ViewController.swift in Sources */,
+				8FBF78291A62BA9000F51264 /* Utils.swift in Sources */,
 				8F92F9CE19FAA36F0010892F /* Extensions.swift in Sources */,
 				8F92F9CA19FAA0070010892F /* Operators.swift in Sources */,
 				8F92F9CC19FAA00F0010892F /* Optional.swift in Sources */,
