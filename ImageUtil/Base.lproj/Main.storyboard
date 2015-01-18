@@ -77,10 +77,23 @@
                                                 </items>
                                             </menu>
                                         </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="YKi-gL-6FY"/>
                                         <menuItem title="Generate Slides" id="8FX-71-6Nv">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="generateSlidesMenu:" target="Ady-hI-5gd" id="z7L-M8-OWB"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Generate Thumbs" id="9xU-xz-lsO">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="generateThumbsMenu:" target="Ady-hI-5gd" id="Ddm-yI-6BE"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Resize to 310" id="w6u-Gj-lSU">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="resizeTo310Menu:" target="Ady-hI-5gd" id="WOc-xl-bAn"/>
                                             </connections>
                                         </menuItem>
                                     </items>

@@ -56,8 +56,17 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 	}
 	
 	@IBAction func generateSlidesMenu(sender: NSButton) {
-		generateSlides()
+		resize("slides", size: 900, renameNumbered:true)
 	}
+	
+	@IBAction func generateThumbsMenu(sender: NSButton) {
+		resize("thumbs", size: 120, renameNumbered:true)
+	}
+	
+	@IBAction func resizeTo310Menu(sender: NSButton) {
+		resize("310", size: 310)
+	}
+
 	
 	
 	func selectFolder() {
@@ -277,7 +286,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		fileListTableView.reloadData()
 	}
 	
-	func generateSlides() {
+	func resize(destinationDirName:String, size:Int, renameNumbered:Bool = false) {
 		let count = imageFileData.count
 		if (count < 1) {
 			return
@@ -285,21 +294,23 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		var current : Int = 1
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
 			// generate slides folder
-			var slidesDir : String
+			var destinationDirPath : String
 			if let parentPath : String = self.imageFolder?.path {
-				if !Utils.createOrEmptyDirectory("\(parentPath)/slides") { return }
-				slidesDir = "\(parentPath)/slides"
+				destinationDirPath = "\(parentPath)/\(destinationDirName)"
+				if !Utils.createOrEmptyDirectory(destinationDirPath) { return }
 			} else {
 				return
 			}
 			// iterate over images
 			for image:ImageFileMetaData in self.imageFileData {
-				Utils.resizeImage(image.url, max: 900, destinationPath:"\(slidesDir)/\(image.name)")
-				println("resized \(slidesDir)/\(image.name)")
+				Utils.resizeImage(image.url, max: size, destinationPath:"\(destinationDirPath)/\(image.name)")
+				println("resized \(destinationDirPath)/\(image.name)")
 				// update progress bar
 				self.progressIndicator.doubleValue = 100 * (Double(current++) / Double(count))
 			}
-			Utils.renameToNumberedFiles(slidesDir, filterExtension: "jpg")
+			if (renameNumbered) {
+				Utils.renameToNumberedFiles(destinationDirPath, filterExtension: "jpg")
+			}
 			//
 			dispatch_async(dispatch_get_main_queue(), {
 				self.fileListTableView.reloadData()
