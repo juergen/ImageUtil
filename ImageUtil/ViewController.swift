@@ -66,6 +66,16 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 	@IBAction func resizeTo310Menu(sender: NSButton) {
 		resize("310", size: 310)
 	}
+	
+	@IBAction func resizeModalOk(sender: NSButton) {
+		println("resizeModalOk")
+		self.dismissViewController(self)
+	}
+	
+	@IBAction func resizeModalCancel(sender: NSButton) {
+		println("resizeModalCancel")
+		self.dismissViewController(self)
+	}
 
 	
 	
