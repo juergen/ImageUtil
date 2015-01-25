@@ -98,6 +98,9 @@
                                         </menuItem>
                                         <menuItem title="Resize" id="0rK-nQ-Fu7">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="resizeMenu:" target="Ady-hI-5gd" id="wQU-zF-AkL"/>
+                                            </connections>
                                         </menuItem>
                                     </items>
                                 </menu>

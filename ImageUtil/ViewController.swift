@@ -67,6 +67,11 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		resize("310", size: 310)
 	}
 	
+	@IBAction func resizeMenu(sender: NSButton) {
+		println("in resizeMenu")
+
+	}
+	
 	func selectFolder() {
 		var openPanel = NSOpenPanel()
 		openPanel.canChooseDirectories = true
