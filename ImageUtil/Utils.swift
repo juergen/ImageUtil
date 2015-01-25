@@ -10,6 +10,7 @@ import Foundation
 
 class Utils {
 	
+	/** will delete directory if it already exists before creating it */
 	class func createOrEmptyDirectory(path:NSString) -> Bool {
 		let fm = NSFileManager.defaultManager()
 		var error:NSError?
@@ -20,6 +21,26 @@ class Utils {
 		var success:Bool = fm.createDirectoryAtPath(path, withIntermediateDirectories:true, attributes:nil, error:&error)
 		if error != nil { println(error) }
 		return success;
+	}
+	
+	/** will add counter (and increase it) to path as long as directory already exists before ceating it */
+	class func createDirectory(path:NSString) -> NSString? {
+		let fm = NSFileManager.defaultManager()
+		let basePath = path
+		var currentPath = path
+		var counter : Int = 1
+		var error:NSError?
+		var exists:Bool = fm.fileExistsAtPath(path)
+		while (fm.fileExistsAtPath(currentPath)) {
+			currentPath = "\(basePath)_\(counter++)"
+
+		}
+		var success:Bool = fm.createDirectoryAtPath(currentPath, withIntermediateDirectories:true, attributes:nil, error:&error)
+		if error != nil { println(error) }
+		if (success) {
+			return currentPath
+		}
+		return nil;
 	}
 
 	class func convertToJpg(imageSource:CGImageSource, path:String) -> Bool {
@@ -82,7 +103,7 @@ class Utils {
 			let sourceUrl:NSURL = filteredFiles[fileName]!
 			let newURL:NSURL = dirUrl.URLByAppendingPathComponent(newName)
 			fm.moveItemAtURL(sourceUrl, toURL:newURL, error: nil)
-			println("renamed \(sourceUrl.lastPathComponent) -> \(newURL.lastPathComponent)")
+			println("renamed \(sourceUrl.lastPathComponent!) -> \(newURL.lastPathComponent!)")
 		}
 		return true
 	}
