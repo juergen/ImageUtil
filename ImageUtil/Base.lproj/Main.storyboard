@@ -172,7 +172,7 @@
         <scene sceneID="hIz-AP-VOD">
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="ImageUtil" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="m2S-Jp-Qdl">
+                    <view key="view" identifier="MainView" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="664" height="536"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
@@ -555,7 +555,7 @@
         <scene sceneID="wP3-8e-ZXG">
             <objects>
                 <viewController id="Qgv-b8-mgT" customClass="ResizeModalController" customModule="ImageUtil" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="JDp-F8-KsQ">
+                    <view key="view" identifier="ResizeModalView" id="JDp-F8-KsQ">
                         <rect key="frame" x="0.0" y="0.0" width="292" height="235"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
