@@ -11,7 +11,7 @@
 "1Xt-HY-uBw.title" = "ImageUtil";
 
 /* Class = "NSTextFieldCell"; title = "Directory"; ObjectID = "3MP-jb-5zg"; */
-"3MP-jb-5zg.title" = "Ziel Ordner";
+"3MP-jb-5zg.title" = "Umbennen";
 
 /* Class = "NSMenuItem"; title = "Quit ImageUtil"; ObjectID = "4sb-4s-VLi"; */
 "4sb-4s-VLi.title" = "ImageUtil Beenden";
@@ -143,7 +143,7 @@
 "oas-Oc-fiZ.title" = "Letzte öffnen";
 
 /* Class = "NSTextFieldCell"; title = "Size"; ObjectID = "rh9-3c-24L"; */
-"rh9-3c-24L.title" = "Größe";
+"rh9-3c-24L.title" = "Breite";
 
 /* Class = "NSMenuItem"; title = "Open Recent"; ObjectID = "tXI-mr-wws"; */
 "tXI-mr-wws.title" = "Letzte öffnen";

@@ -67,18 +67,6 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		resize("310", size: 310)
 	}
 	
-	@IBAction func resizeModalOk(sender: NSButton) {
-		println("resizeModalOk")
-		self.dismissViewController(self)
-	}
-	
-	@IBAction func resizeModalCancel(sender: NSButton) {
-		println("resizeModalCancel")
-		self.dismissViewController(self)
-	}
-
-	
-	
 	func selectFolder() {
 		var openPanel = NSOpenPanel()
 		openPanel.canChooseDirectories = true
@@ -251,13 +239,15 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		// do not block UI
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {
 			for (index, url : NSURL) in enumerate(contents) {
+				let progress : Double = 100 * (Double(index + 1) / Double(count))
+				let progressFormatted: String  = progress.format(".1")
 				// do we have an image?
 				let pathExtension : String = url.pathExtension ?? ""
 				if !contains(["jpeg", "jpg", "cr2"], pathExtension.lowercaseString) {
+					// ensure that progress indicator is also updated
+					self.progressIndicator.doubleValue = progress
 					continue
 				}
-				let progress : Double = 100 * (Double(index + 1) / Double(count))
-				let progressFormatted: String  = progress.format(".1")
 				// do we have a filename?
 				let fileName : String = url.lastPathComponent ?? ""
 				if fileName.isEmpty {
