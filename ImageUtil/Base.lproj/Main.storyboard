@@ -469,16 +469,6 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eCM-is-to0">
-                                <rect key="frame" x="482" y="29" width="122" height="19"/>
-                                <buttonCell key="cell" type="roundRect" title="Resize ..." bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Vy2-ab-tzX">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="cellTitle"/>
-                                </buttonCell>
-                                <connections>
-                                    <segue destination="Qgv-b8-mgT" kind="sheet" identifier="resizeSegue" id="H2l-mx-VQy"/>
-                                </connections>
-                            </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vxe-3J-pG6">
                                 <rect key="frame" x="258" y="20" width="148" height="32"/>
                                 <constraints>
@@ -502,9 +492,7 @@
                             <constraint firstItem="6xj-V3-KAy" firstAttribute="leading" secondItem="E2S-eJ-H2U" secondAttribute="leading" id="Aul-Nf-Err"/>
                             <constraint firstItem="bR3-iP-UXT" firstAttribute="top" secondItem="RqF-Ug-8H9" secondAttribute="bottom" constant="17" id="Bj9-Q3-Ldb"/>
                             <constraint firstItem="6xj-V3-KAy" firstAttribute="top" secondItem="RYw-AH-Rgd" secondAttribute="bottom" constant="8" symbolic="YES" id="DJ6-c2-H0e"/>
-                            <constraint firstItem="Vxe-3J-pG6" firstAttribute="baseline" secondItem="eCM-is-to0" secondAttribute="baseline" id="E6S-3r-80m"/>
                             <constraint firstItem="vvK-hf-diC" firstAttribute="top" secondItem="eDa-T6-O7z" secondAttribute="bottom" constant="18" id="Fjm-m4-dS5"/>
-                            <constraint firstItem="eCM-is-to0" firstAttribute="leading" secondItem="Vxe-3J-pG6" secondAttribute="trailing" constant="82" id="HFR-QI-muN"/>
                             <constraint firstAttribute="centerX" secondItem="rXy-zG-0Sj" secondAttribute="centerX" id="HXj-Iu-HCS"/>
                             <constraint firstItem="auU-h8-bDc" firstAttribute="leading" secondItem="RqF-Ug-8H9" secondAttribute="leading" constant="2" id="HgH-ef-mpb"/>
                             <constraint firstItem="RYw-AH-Rgd" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="15" id="I6C-R2-rKF"/>
@@ -548,6 +536,7 @@
                         <outlet property="postfix" destination="auU-h8-bDc" id="yHg-jt-aTT"/>
                         <outlet property="progressIndicator" destination="rXy-zG-0Sj" id="KhU-Du-kwO"/>
                         <outlet property="useNewStartDate" destination="bR3-iP-UXT" id="Aec-VK-cNJ"/>
+                        <segue destination="Qgv-b8-mgT" kind="sheet" identifier="resizeSegue" id="sRF-Ax-M16"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
