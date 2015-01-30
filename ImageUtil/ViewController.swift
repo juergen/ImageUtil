@@ -68,8 +68,15 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 	}
 	
 	@IBAction func resizeMenu(sender: NSButton) {
-		println("in resizeMenu")
-
+		self.performSegueWithIdentifier("resizeSegue", sender: self)
+	}
+	
+	override func prepareForSegue(segue: NSStoryboardSegue, sender: AnyObject?) {
+		println("in prepareForSegue")
+		let destination = segue.destinationController as ResizeModalController
+		destination.callBack = { size, renameNumbered in
+			self.resize("\(size)", size: size, renameNumbered:renameNumbered)
+		}
 	}
 	
 	func selectFolder() {

@@ -10,6 +10,8 @@ import Cocoa
 
 class ResizeModalController: NSViewController {
 	
+	var callBack:((Int,Bool) -> Void)?
+	
 	@IBOutlet weak var resizeWidth: NSTextField!
 	@IBOutlet weak var renameToNumbers: NSButton!
 	
@@ -30,13 +32,18 @@ class ResizeModalController: NSViewController {
 			return
 		}
 		let rename:Bool = self.renameToNumbers.state == 1
-		//resize("resizedTo_\(width)", size: width, renameNumbered:rename)
 		self.dismissViewController(self)
+		callBack >>- {
+			$0(width, rename)
+		}
 	}
 	
 	@IBAction func resizeModalCancel(sender: NSButton) {
 		println("resizeModalCancel")
 		self.dismissViewController(self)
+		
 	}
+	
+	
 
 }
