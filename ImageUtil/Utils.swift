@@ -10,6 +10,10 @@ import Foundation
 
 class Utils {
 	
+	// ----------------------------------------------------------------------------------------------------
+	// MARK: - Directory
+	// ----------------------------------------------------------------------------------------------------
+	
 	/** will delete directory if it already exists before creating it */
 	class func createOrEmptyDirectory(path:NSString) -> Bool {
 		let fm = NSFileManager.defaultManager()
@@ -43,6 +47,10 @@ class Utils {
 		return nil;
 	}
 
+	// ----------------------------------------------------------------------------------------------------
+	// MARK: - Image
+	// ----------------------------------------------------------------------------------------------------
+	
 	class func convertToJpg(imageSource:CGImageSource, path:String) -> Bool {
 		let destinationUrl:NSURL = NSURL(fileURLWithPath: path)!
 		let destinationImage = CGImageDestinationCreateWithURL(destinationUrl, kUTTypeJPEG, 1, nil)

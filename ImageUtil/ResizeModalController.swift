@@ -12,15 +12,40 @@ class ResizeModalController: NSViewController {
 	
 	var callBack:((Int,Bool) -> Void)?
 	
-	@IBOutlet weak var resizeWidth: NSTextField!
-	@IBOutlet weak var renameToNumbers: NSButton!
+	// ----------------------------------------------------------------------------------------------------
+	// MARK: - Lifecycle
+	// ----------------------------------------------------------------------------------------------------
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do view setup here.
 	}
 	
+	// ----------------------------------------------------------------------------------------------------
+	// MARK: -  @IBOutlet
+	// ----------------------------------------------------------------------------------------------------
+	
+	@IBOutlet weak var resizeWidth: NSTextField!
+	@IBOutlet weak var renameToNumbers: NSButton!
+	
+	// ----------------------------------------------------------------------------------------------------
+	// MARK: -  @IBAction
+	// ----------------------------------------------------------------------------------------------------
+	
 	@IBAction func resizeModalOk(sender: NSButton) {
+		resize()
+	}
+	
+	@IBAction func resizeModalCancel(sender: NSButton) {
+		println("resizeModalCancel")
+		self.dismissViewController(self)
+	}
+	
+	// ----------------------------------------------------------------------------------------------------
+	// MARK: - Private
+	// ----------------------------------------------------------------------------------------------------
+	
+	private func resize() {
 		println("resizeModalOk")
 		println("resizeWidth: \(resizeWidth.stringValue)")
 		println("renameToNumbers: \(renameToNumbers.state)")
@@ -38,12 +63,4 @@ class ResizeModalController: NSViewController {
 		}
 	}
 	
-	@IBAction func resizeModalCancel(sender: NSButton) {
-		println("resizeModalCancel")
-		self.dismissViewController(self)
-		
-	}
-	
-	
-
 }

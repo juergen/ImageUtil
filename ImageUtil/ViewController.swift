@@ -8,8 +8,16 @@
 
 import Cocoa
 
-class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
+class ViewController: NSViewController {
+	
+	var imageFolder : NSURL?
+	var imageFileData = [ImageFileMetaData]()
+	let fm = NSFileManager.defaultManager()
 
+	// ----------------------------------------------------------------------------------------------------
+	// MARK: - Lifecycle
+	// ----------------------------------------------------------------------------------------------------
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
@@ -23,9 +31,29 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		}
 	}
 	
-	var imageFolder : NSURL?
-	var imageFileData = [ImageFileMetaData]()
-	let fm = NSFileManager.defaultManager()
+	func applicationDidFinishLaunching(aNotification: NSNotification?) {
+		// Insert code here to initialize your application
+	}
+	
+	func applicationWillTerminate(aNotification: NSNotification?) {
+		// Insert code here to tear down your application
+	}
+	
+	// ----------------------------------------------------------------------------------------------------
+	// MARK: - Segue
+	// ----------------------------------------------------------------------------------------------------
+	
+	override func prepareForSegue(segue: NSStoryboardSegue, sender: AnyObject?) {
+		println("in prepareForSegue")
+		let destination = segue.destinationController as! ResizeModalController
+		destination.callBack = { size, renameNumbered in
+			self.resize("\(size)", size: size, renameNumbered:renameNumbered)
+		}
+	}
+
+	// ----------------------------------------------------------------------------------------------------
+	// MARK: -  @IBOutlet
+	// ----------------------------------------------------------------------------------------------------
 	
 	//@IBOutlet weak var window: NSWindow!
 	@IBOutlet weak var pathTextField: NSTextField!
@@ -39,13 +67,10 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 	@IBOutlet weak var appendOriginalName: NSButton!
 	@IBOutlet weak var openRecentMenu: NSMenu!
 	
-	func applicationDidFinishLaunching(aNotification: NSNotification?) {
-		// Insert code here to initialize your application
-	}
 	
-	func applicationWillTerminate(aNotification: NSNotification?) {
-		// Insert code here to tear down your application
-	}
+	// ----------------------------------------------------------------------------------------------------
+	// MARK: -  @IBAction
+	// ----------------------------------------------------------------------------------------------------
 	
 	@IBAction func openDocumentMenu(sender: NSMenuItem) {
 		selectFolder()
@@ -71,15 +96,21 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		self.performSegueWithIdentifier("resizeSegue", sender: self)
 	}
 	
-	override func prepareForSegue(segue: NSStoryboardSegue, sender: AnyObject?) {
-		println("in prepareForSegue")
-		let destination = segue.destinationController as! ResizeModalController
-		destination.callBack = { size, renameNumbered in
-			self.resize("\(size)", size: size, renameNumbered:renameNumbered)
-		}
+	@IBAction func rename(sender: NSButton) {
+		//
+		renameImages()
+	}
+
+	// ----------------------------------------------------------------------------------------------------
+	// MARK: - Private
+	// ----------------------------------------------------------------------------------------------------
+	
+	private func clearTable() {
+		imageFileData = []
+		fileListTableView.reloadData()
 	}
 	
-	func selectFolder() {
+	private func selectFolder() {
 		var openPanel = NSOpenPanel()
 		openPanel.canChooseDirectories = true
 		openPanel.canChooseFiles = false
@@ -99,38 +130,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		pathTextField.stringValue = NSLocalizedString("Path: ", comment:"Path label") + pathString
 	}
 	
-	func numberOfRowsInTableView(aTableView: NSTableView) -> Int {
-		return imageFileData.count
-	}
-	
-	func tableView(tableView: NSTableView, viewForTableColumn: NSTableColumn?, row: Int) -> NSView? {
-		let identifier = viewForTableColumn!.identifier
-		let cell = fileListTableView.makeViewWithIdentifier(identifier, owner: self) as! NSTableCellView
-		let file : ImageFileMetaData = imageFileData[row]
-		var value: AnyObject?
-		switch identifier {
-		case "FileName" :
-			value = file.name
-		case "ImageDate" :
-			value = file.imageDate
-		case "FileDate" :
-			value = file.fileDate
-		default: "./."
-		}
-		var stringValue: String
-		if (value! is NSDate) {
-			stringValue = (value as! NSDate).formattedString()
-		} else if (value is String) {
-			stringValue = value as! String
-		} else {
-			stringValue = "./."
-		}
-		cell.textField >>- { $0.stringValue = stringValue }
-		return cell
-	}
-	
-	@IBAction func rename(sender: NSButton) {
-		//
+	private func renameImages() {
 		progressIndicator.doubleValue = 1
 		progressIndicator.startAnimation(self)
 		//
@@ -236,7 +236,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		})
 	}
 	
-	func readMetaDataOfFilesInDirectory(dir:NSURL) {
+	private func readMetaDataOfFilesInDirectory(dir:NSURL) {
 		//
 		progressIndicator.doubleValue = 1
 		progressIndicator.startAnimation(self)
@@ -293,12 +293,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		
 	}
 	
-	func clearTable() {
-		imageFileData = []
-		fileListTableView.reloadData()
-	}
-	
-	func resize(destinationDirName:String, size:Int, renameNumbered:Bool = false) {
+	private func resize(destinationDirName:String, size:Int, renameNumbered:Bool = false) {
 		let count = imageFileData.count
 		if (count < 1) {
 			return
@@ -333,8 +328,45 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		})
 	}
 	
+}
+
+// ----------------------------------------------------------------------------------------------------
+// MARK: - TableView
+// ----------------------------------------------------------------------------------------------------
+
+extension ViewController: NSTableViewDelegate {
 	
+	func tableView(tableView: NSTableView, viewForTableColumn: NSTableColumn?, row: Int) -> NSView? {
+		let identifier = viewForTableColumn!.identifier
+		let cell = fileListTableView.makeViewWithIdentifier(identifier, owner: self) as! NSTableCellView
+		let file : ImageFileMetaData = imageFileData[row]
+		var value: AnyObject?
+		switch identifier {
+		case "FileName" :
+			value = file.name
+		case "ImageDate" :
+			value = file.imageDate
+		case "FileDate" :
+			value = file.fileDate
+		default: "./."
+		}
+		var stringValue: String
+		if (value! is NSDate) {
+			stringValue = (value as! NSDate).formattedString()
+		} else if (value is String) {
+			stringValue = value as! String
+		} else {
+			stringValue = "./."
+		}
+		cell.textField >>- { $0.stringValue = stringValue }
+		return cell
+	}
+}
 
-
+extension ViewController: NSTableViewDataSource {
+	
+	func numberOfRowsInTableView(aTableView: NSTableView) -> Int {
+		return imageFileData.count
+	}
 }
 
