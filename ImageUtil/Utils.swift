@@ -14,28 +14,28 @@ class Utils {
 	class func createOrEmptyDirectory(path:NSString) -> Bool {
 		let fm = NSFileManager.defaultManager()
 		var error:NSError?
-		var exists:Bool = fm.fileExistsAtPath(path)
+		var exists:Bool = fm.fileExistsAtPath(path as String)
 		if (exists) {
-			fm.removeItemAtPath(path, error: nil)
+			fm.removeItemAtPath(path as String, error: nil)
 		}
-		var success:Bool = fm.createDirectoryAtPath(path, withIntermediateDirectories:true, attributes:nil, error:&error)
+		var success:Bool = fm.createDirectoryAtPath(path as String, withIntermediateDirectories:true, attributes:nil, error:&error)
 		if error != nil { println(error) }
 		return success;
 	}
 	
 	/** will add counter (and increase it) to path as long as directory already exists before ceating it */
-	class func createDirectory(path:NSString) -> NSString? {
+	class func createDirectory(path:String) -> String? {
 		let fm = NSFileManager.defaultManager()
 		let basePath = path
 		var currentPath = path
 		var counter : Int = 1
 		var error:NSError?
-		var exists:Bool = fm.fileExistsAtPath(path)
-		while (fm.fileExistsAtPath(currentPath)) {
+		var exists:Bool = fm.fileExistsAtPath(path as String)
+		while (fm.fileExistsAtPath(currentPath as String)) {
 			currentPath = "\(basePath)_\(counter++)"
 
 		}
-		var success:Bool = fm.createDirectoryAtPath(currentPath, withIntermediateDirectories:true, attributes:nil, error:&error)
+		var success:Bool = fm.createDirectoryAtPath(currentPath as String, withIntermediateDirectories:true, attributes:nil, error:&error)
 		if error != nil { println(error) }
 		if (success) {
 			return currentPath
@@ -54,7 +54,7 @@ class Utils {
 	class func resizeImage(imageUrl:NSURL, max:Int, destinationPath:String) -> Bool {
 		// get CGImageSource from provided ulr
 		if let imageSource:CGImageSource = CGImageSourceCreateWithURL(imageUrl, nil) {
-			let options : [String:AnyObject] = [
+			let options : [NSObject:AnyObject] = [
 				kCGImageSourceThumbnailMaxPixelSize: max,
 				kCGImageSourceCreateThumbnailFromImageAlways: true
 			]
@@ -82,7 +82,7 @@ class Utils {
 		let contents : [NSURL] = fm.contentsOfDirectoryAtURL(dirUrl,
 			includingPropertiesForKeys: [NSURLCreationDateKey],
 			options: .SkipsHiddenFiles,
-			error: nil) as [NSURL]
+			error: nil) as! [NSURL]
 		// filter file names
 		var filteredFiles = [String:NSURL]()
 		for (index, url:NSURL) in enumerate(contents) {
@@ -109,13 +109,13 @@ class Utils {
 	}
 	
 	class func getDateTime(imageSource:CGImageSource) -> NSDate {
-		let uint:UInt = UInt.min
-		let metadataAtIndex = CGImageSourceCopyMetadataAtIndex(imageSource, uint, nil)
+		let int:Int = Int.min
+		let metadataAtIndex = CGImageSourceCopyMetadataAtIndex(imageSource, int, nil)
 		
 		let imageDict: Dictionary? = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) as Dictionary
 		
 		return imageDict <|> "{TIFF}" <| "DateTime" >>- {
-			($0 as String).parseDate("yyyy:MM:dd HH:mm:ss")
+			($0 as! String).parseDate("yyyy:MM:dd HH:mm:ss")
 			} ?? NSDate.defaultDate()
 	}
 

@@ -73,7 +73,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 	
 	override func prepareForSegue(segue: NSStoryboardSegue, sender: AnyObject?) {
 		println("in prepareForSegue")
-		let destination = segue.destinationController as ResizeModalController
+		let destination = segue.destinationController as! ResizeModalController
 		destination.callBack = { size, renameNumbered in
 			self.resize("\(size)", size: size, renameNumbered:renameNumbered)
 		}
@@ -99,13 +99,13 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		pathTextField.stringValue = NSLocalizedString("Path: ", comment:"Path label") + pathString
 	}
 	
-	func numberOfRowsInTableView(aTableView: NSTableView!) -> Int {
+	func numberOfRowsInTableView(aTableView: NSTableView) -> Int {
 		return imageFileData.count
 	}
 	
-	func tableView(tableView: NSTableView, viewForTableColumn: NSTableColumn, row: Int) -> NSView {
-		let identifier = viewForTableColumn.identifier
-		let cell = fileListTableView.makeViewWithIdentifier(identifier, owner: self) as NSTableCellView
+	func tableView(tableView: NSTableView, viewForTableColumn: NSTableColumn?, row: Int) -> NSView? {
+		let identifier = viewForTableColumn!.identifier
+		let cell = fileListTableView.makeViewWithIdentifier(identifier, owner: self) as! NSTableCellView
 		let file : ImageFileMetaData = imageFileData[row]
 		var value: AnyObject?
 		switch identifier {
@@ -119,9 +119,9 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		}
 		var stringValue: String
 		if (value! is NSDate) {
-			stringValue = (value as NSDate).formattedString()
+			stringValue = (value as! NSDate).formattedString()
 		} else if (value is String) {
-			stringValue = value as String
+			stringValue = value as! String
 		} else {
 			stringValue = "./."
 		}
@@ -244,7 +244,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		let contents : [NSURL] = fm.contentsOfDirectoryAtURL(imageFolder!,
 			includingPropertiesForKeys: [NSURLCreationDateKey],
 			options: .SkipsHiddenFiles,
-			error: nil) as [NSURL]
+			error: nil) as! [NSURL]
 		//
 		let count = contents.count
 		imageFileData = [] // used to avoid duplicate new file names
@@ -268,7 +268,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 				println("\(progressFormatted)% \(fileName)")
 				//println("nsurl: \(url.path)")
 				let cachedValues : Dictionary = url.resourceValuesForKeys([NSURLCreationDateKey], error: nil)!
-				let fileCreateDate : NSDate = cachedValues[NSURLCreationDateKey] as NSDate
+				let fileCreateDate : NSDate = cachedValues[NSURLCreationDateKey] as! NSDate
 				let source = CGImageSourceCreateWithURL(url, nil)
 				if (nil == source) { continue }
 				let imageFile = ImageFileMetaData(
