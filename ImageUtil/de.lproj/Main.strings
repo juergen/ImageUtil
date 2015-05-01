@@ -4,13 +4,13 @@
 /* Class = "NSButtonCell"; title = "Select an image folder"; ObjectID = "0O6-4p-vJm"; */
 "0O6-4p-vJm.title" = "Wähle einen Ordner mit Bildern aus";
 
-/* Class = "NSMenuItem"; title = "Resize"; ObjectID = "0rK-nQ-Fu7"; */
-"0rK-nQ-Fu7.title" = "Größe anpassen";
+/* Class = "NSMenuItem"; title = "Resize ..."; ObjectID = "0rK-nQ-Fu7"; */
+"0rK-nQ-Fu7.title" = "Größe anpassen…";
 
 /* Class = "NSMenuItem"; title = "ImageUtil"; ObjectID = "1Xt-HY-uBw"; */
 "1Xt-HY-uBw.title" = "ImageUtil";
 
-/* Class = "NSTextFieldCell"; title = "Directory"; ObjectID = "3MP-jb-5zg"; */
+/* Class = "NSTextFieldCell"; title = "Rename to"; ObjectID = "3MP-jb-5zg"; */
 "3MP-jb-5zg.title" = "Umbennen";
 
 /* Class = "NSMenuItem"; title = "Quit ImageUtil"; ObjectID = "4sb-4s-VLi"; */
@@ -25,11 +25,11 @@
 /* Class = "NSMenuItem"; title = "About ImageUtil"; ObjectID = "5kV-Vb-QxS"; */
 "5kV-Vb-QxS.title" = "Über ImageUtil";
 
-/* Class = "NSMenuItem"; title = "Generate Slides"; ObjectID = "8FX-71-6Nv"; */
-"8FX-71-6Nv.title" = "Slides generieren";
+/* Class = "NSMenuItem"; title = "Generate Slides (900px)"; ObjectID = "8FX-71-6Nv"; */
+"8FX-71-6Nv.title" = "Slides generieren (900px)";
 
-/* Class = "NSMenuItem"; title = "Generate Thumbs"; ObjectID = "9xU-xz-lsO"; */
-"9xU-xz-lsO.title" = "Thumbs generieren";
+/* Class = "NSMenuItem"; title = "Generate Thumbs (120px)"; ObjectID = "9xU-xz-lsO"; */
+"9xU-xz-lsO.title" = "Thumbs generieren (120px)";
 
 /* Class = "NSTextFieldCell"; title = "Hours"; ObjectID = "32F-Rm-xqo"; */
 "32F-Rm-xqo.title" = "Stunden";
@@ -44,13 +44,13 @@
 "AYu-sK-qS6.title" = "Haupt Menu";
 
 /* Class = "NSMenuItem"; title = "Preferences…"; ObjectID = "BOF-NM-1cW"; */
-"BOF-NM-1cW.title" = "Preferences…";
+"BOF-NM-1cW.title" = "Einstellungen…";
 
 /* Class = "NSMenu"; title = "Help"; ObjectID = "F2S-fz-NVQ"; */
 "F2S-fz-NVQ.title" = "Hilfe";
 
 /* Class = "NSMenuItem"; title = "ImageUtil Help"; ObjectID = "FKE-Sm-Kum"; */
-"FKE-Sm-Kum.title" = "ImageUtil Hilfre";
+"FKE-Sm-Kum.title" = "ImageUtil Hilfe";
 
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "GOY-TY-KjW"; */
 "GOY-TY-KjW.title" = "Table View Cell";
@@ -61,7 +61,7 @@
 /* Class = "NSMenuItem"; title = "Open…"; ObjectID = "IAo-SY-fd9"; */
 "IAo-SY-fd9.title" = "Öffnen…";
 
-/* Class = "(null)"; title = "Window"; ObjectID = "IQv-IB-iLA"; */
+/* Class = "NSWindow"; title = "Window"; ObjectID = "IQv-IB-iLA"; */
 "IQv-IB-iLA.title" = "Window";
 
 /* Class = "NSMenuItem"; title = "Show All"; ObjectID = "Kd2-mp-pUS"; */
@@ -80,7 +80,7 @@
 "OY7-WF-poV.title" = "Minimize";
 
 /* Class = "NSMenuItem"; title = "Hide ImageUtil"; ObjectID = "Olw-nP-bQN"; */
-"Olw-nP-bQN.title" = "Hide ImageUtil";
+"Olw-nP-bQN.title" = "Ausblenden";
 
 /* Class = "NSButtonCell"; title = "with new base date:"; ObjectID = "R3V-mw-GWL"; */
 "R3V-mw-GWL.title" = "umrechnen starten mit:";
@@ -94,9 +94,6 @@
 /* Class = "NSMenuItem"; title = "Hide Others"; ObjectID = "Vdr-fp-XzO"; */
 "Vdr-fp-XzO.title" = "Hide Others";
 
-/* Class = "NSButtonCell"; title = "Resize ..."; ObjectID = "Vy2-ab-tzX"; */
-"Vy2-ab-tzX.title" = "Größe ändern ...";
-
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "WCV-L0-Xkn"; */
 "WCV-L0-Xkn.title" = "Table View Cell";
 
@@ -109,7 +106,7 @@
 /* Class = "NSMenuItem"; title = "Window"; ObjectID = "aUF-d1-5bR"; */
 "aUF-d1-5bR.title" = "Window";
 
-/* Class = "NSButtonCell"; title = "OK"; ObjectID = "acX-GK-C3l"; */
+/* Class = "NSButtonCell"; title = "Resize"; ObjectID = "acX-GK-C3l"; */
 "acX-GK-C3l.title" = "OK";
 
 /* Class = "NSButtonCell"; title = "Cancel"; ObjectID = "bSj-iW-J8S"; */
@@ -142,7 +139,7 @@
 /* Class = "NSMenu"; title = "Open Recent"; ObjectID = "oas-Oc-fiZ"; */
 "oas-Oc-fiZ.title" = "Letzte öffnen";
 
-/* Class = "NSTextFieldCell"; title = "Size"; ObjectID = "rh9-3c-24L"; */
+/* Class = "NSTextFieldCell"; title = "Width"; ObjectID = "rh9-3c-24L"; */
 "rh9-3c-24L.title" = "Breite";
 
 /* Class = "NSMenuItem"; title = "Open Recent"; ObjectID = "tXI-mr-wws"; */
@@ -157,8 +154,11 @@
 /* Class = "NSMenuItem"; title = "Clear Menu"; ObjectID = "vNY-rz-j42"; */
 "vNY-rz-j42.title" = "Clear Menu";
 
+/* Class = "NSMenuItem"; title = "Resize to 310px"; ObjectID = "w6u-Gj-lSU"; */
+"w6u-Gj-lSU.title" = "Größe auf 310px anpassen";
+
 /* Class = "NSMenuItem"; title = "Help"; ObjectID = "wpr-3q-Mcd"; */
-"wpr-3q-Mcd.title" = "Help";
+"wpr-3q-Mcd.title" = "Hilfe";
 
 /* Class = "NSTableColumn"; headerCell.title = "File Date"; ObjectID = "x4j-8O-2X2"; */
 "x4j-8O-2X2.headerCell.title" = "Datei Datum";

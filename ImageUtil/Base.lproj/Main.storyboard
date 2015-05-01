@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7702"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -78,25 +78,26 @@
                                             </menu>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="YKi-gL-6FY"/>
-                                        <menuItem title="Generate Slides" id="8FX-71-6Nv">
+                                        <menuItem title="Generate Slides (900px)" id="8FX-71-6Nv">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="generateSlidesMenu:" target="Ady-hI-5gd" id="z7L-M8-OWB"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Generate Thumbs" id="9xU-xz-lsO">
+                                        <menuItem title="Generate Thumbs (120px)" id="9xU-xz-lsO">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="generateThumbsMenu:" target="Ady-hI-5gd" id="Ddm-yI-6BE"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Resize to 310" id="w6u-Gj-lSU">
+                                        <menuItem isSeparatorItem="YES" id="tfZ-XC-Uyz"/>
+                                        <menuItem title="Resize to 310px" id="w6u-Gj-lSU">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="resizeTo310Menu:" target="Ady-hI-5gd" id="WOc-xl-bAn"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Resize" id="0rK-nQ-Fu7">
+                                        <menuItem title="Resize ..." id="0rK-nQ-Fu7">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="resizeMenu:" target="Ady-hI-5gd" id="wQU-zF-AkL"/>
@@ -200,11 +201,12 @@
                             </progressIndicator>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RYw-AH-Rgd">
                                 <rect key="frame" x="15" y="285" width="634" height="189"/>
-                                <clipView key="contentView" misplaced="YES" id="rjT-Sh-7nZ">
+                                <clipView key="contentView" id="rjT-Sh-7nZ">
                                     <rect key="frame" x="1" y="17" width="238" height="117"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="ahV-yD-7MR" viewBased="YES" id="2cK-tS-luz">
+                                            <rect key="frame" x="0.0" y="0.0" width="632" height="0.0"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -556,7 +558,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="pI0-pA-plg"/>
                                 </constraints>
-                                <buttonCell key="cell" type="push" title="OK" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="acX-GK-C3l">
+                                <buttonCell key="cell" type="push" title="Resize" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="acX-GK-C3l">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -591,7 +593,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="wht-tb-9Jp"/>
                                 </constraints>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Rename" id="3MP-jb-5zg">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Rename to" id="3MP-jb-5zg">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
