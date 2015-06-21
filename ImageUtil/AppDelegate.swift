@@ -13,6 +13,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 	func applicationDidFinishLaunching(aNotification: NSNotification) {
 		// Insert code here to initialize your application
+    // set default timezone
+    NSTimeZone.setDefaultTimeZone(NSTimeZone(forSecondsFromGMT: +0))
 	}
 
 	func applicationWillTerminate(aNotification: NSNotification) {

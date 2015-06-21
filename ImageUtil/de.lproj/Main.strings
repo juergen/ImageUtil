@@ -16,6 +16,9 @@
 /* Class = "NSMenuItem"; title = "Quit ImageUtil"; ObjectID = "4sb-4s-VLi"; */
 "4sb-4s-VLi.title" = "ImageUtil Beenden";
 
+/* Class = "NSButtonCell"; title = "update date in image metadata"; ObjectID = "5HL-FS-hG7"; */
+"5HL-FS-hG7.title" = "Datum in Bild Metadaten anpassen";
+
 /* Class = "NSTextFieldCell"; title = "adopt (+/-)"; ObjectID = "5Q5-DO-3v2"; */
 "5Q5-DO-3v2.title" = "anpassen (+/-)";
 
@@ -33,9 +36,6 @@
 
 /* Class = "NSTextFieldCell"; title = "Hours"; ObjectID = "32F-Rm-xqo"; */
 "32F-Rm-xqo.title" = "Stunden";
-
-/* Class = "NSButtonCell"; title = "File"; ObjectID = "51l-Ps-bo6"; */
-"51l-Ps-bo6.title" = "Datei";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "AT0-Mh-EQc"; */
 "AT0-Mh-EQc.title" = "Text Cell";
@@ -62,7 +62,7 @@
 "IAo-SY-fd9.title" = "Öffnen…";
 
 /* Class = "NSWindow"; title = "Window"; ObjectID = "IQv-IB-iLA"; */
-"IQv-IB-iLA.title" = "Window";
+"IQv-IB-iLA.title" = "JB's Image Utilities";
 
 /* Class = "NSMenuItem"; title = "Show All"; ObjectID = "Kd2-mp-pUS"; */
 "Kd2-mp-pUS.title" = "Alle Fenster Anzeigen";
@@ -82,11 +82,17 @@
 /* Class = "NSMenuItem"; title = "Hide ImageUtil"; ObjectID = "Olw-nP-bQN"; */
 "Olw-nP-bQN.title" = "Ausblenden";
 
+/* Class = "NSButtonCell"; title = "File name"; ObjectID = "Qa6-sX-Zec"; */
+"Qa6-sX-Zec.title" = "Dateiname";
+
 /* Class = "NSButtonCell"; title = "with new base date:"; ObjectID = "R3V-mw-GWL"; */
 "R3V-mw-GWL.title" = "umrechnen starten mit:";
 
 /* Class = "NSMenuItem"; title = "Zoom"; ObjectID = "R4o-n2-Eq4"; */
 "R4o-n2-Eq4.title" = "Zoom";
+
+/* Class = "NSButtonCell"; title = "rename image file"; ObjectID = "St6-ES-87Z"; */
+"St6-ES-87Z.title" = "Bild umbenennen";
 
 /* Class = "NSMenu"; title = "Window"; ObjectID = "Td7-aD-5lo"; */
 "Td7-aD-5lo.title" = "Window";
@@ -100,8 +106,8 @@
 /* Class = "NSButtonCell"; title = "Radio"; ObjectID = "WTO-tr-4aH"; */
 "WTO-tr-4aH.title" = "Radio";
 
-/* Class = "NSButtonCell"; title = "Picture"; ObjectID = "Wrs-Mh-kKq"; */
-"Wrs-Mh-kKq.title" = "Aufnahme";
+/* Class = "NSButtonCell"; title = "Picture metadata"; ObjectID = "Wrs-Mh-kKq"; */
+"Wrs-Mh-kKq.title" = "Aufnahme (Bild Metadaten)";
 
 /* Class = "NSMenuItem"; title = "Window"; ObjectID = "aUF-d1-5bR"; */
 "aUF-d1-5bR.title" = "Window";
@@ -118,8 +124,8 @@
 /* Class = "NSMenuItem"; title = "File"; ObjectID = "dMs-cI-mzQ"; */
 "dMs-cI-mzQ.title" = "Datei";
 
-/* Class = "NSButtonCell"; title = "Rename Images"; ObjectID = "dkR-6I-umg"; */
-"dkR-6I-umg.title" = "Bilder umbenennen";
+/* Class = "NSButtonCell"; title = "Update Images"; ObjectID = "dkR-6I-umg"; */
+"dkR-6I-umg.title" = "Bilder anpassen";
 
 /* Class = "NSButtonCell"; title = "append original file name"; ObjectID = "ebN-x3-VaR"; */
 "ebN-x3-VaR.title" = "Orignial Dateiname anhängen";
@@ -132,6 +138,9 @@
 
 /* Class = "NSTextFieldCell"; title = "Date from"; ObjectID = "jMa-2k-9z1"; */
 "jMa-2k-9z1.title" = "Datum";
+
+/* Class = "NSButtonCell"; title = "File"; ObjectID = "jh2-R4-1xe"; */
+"jh2-R4-1xe.title" = "Datei";
 
 /* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "k87-5x-cZ2"; */
 "k87-5x-cZ2.title" = "Table View Cell";
@@ -147,6 +156,9 @@
 
 /* Class = "NSTextFieldCell"; title = "Path:"; ObjectID = "tgv-Nr-zU4"; */
 "tgv-Nr-zU4.title" = "Pfad: ";
+
+/* Class = "NSTextFieldCell"; title = "Action"; ObjectID = "uN2-gO-dUe"; */
+"uN2-gO-dUe.title" = "Aktion";
 
 /* Class = "NSMenu"; title = "ImageUtil"; ObjectID = "uQy-DD-JDr"; */
 "uQy-DD-JDr.title" = "ImageUtil";
