@@ -22,6 +22,7 @@
 		8FBF78271A6156C100F51264 /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF78261A6156C100F51264 /* Structs.swift */; };
 		8FBF78291A62BA9000F51264 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF78281A62BA9000F51264 /* Utils.swift */; };
 		8FF602CF1EEC43F9003358C9 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 8FF602CE1EEC43F9003358C9 /* README.md */; };
+		8FF602D11EEC5A32003358C9 /* LICENSE.md in Sources */ = {isa = PBXBuildFile; fileRef = 8FF602D01EEC5A32003358C9 /* LICENSE.md */; };
 		8FFC17A91A50476300C00A71 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FFC17A81A50476300C00A71 /* ViewController.swift */; };
 		8FFC17AD1A50480F00C00A71 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FFC17AC1A50480F00C00A71 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
@@ -58,6 +59,7 @@
 		8FBF78261A6156C100F51264 /* Structs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Structs.swift; sourceTree = "<group>"; };
 		8FBF78281A62BA9000F51264 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		8FF602CE1EEC43F9003358C9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		8FF602D01EEC5A32003358C9 /* LICENSE.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 		8FFC17A81A50476300C00A71 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		8FFC17AC1A50480F00C00A71 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -84,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				8FF602CE1EEC43F9003358C9 /* README.md */,
+				8FF602D01EEC5A32003358C9 /* LICENSE.md */,
 				8F9C37E319C584DE00BDD4D3 /* ImageUtil */,
 				8F9C37F619C584DE00BDD4D3 /* ImageUtilTests */,
 				8F9C37E219C584DE00BDD4D3 /* Products */,
@@ -273,6 +276,7 @@
 				8F57D7151A75272800E2F71F /* ResizeModalController.swift in Sources */,
 				8FFC17AD1A50480F00C00A71 /* AppDelegate.swift in Sources */,
 				8F6B3BD61B35A1460026B658 /* Functions.swift in Sources */,
+				8FF602D11EEC5A32003358C9 /* LICENSE.md in Sources */,
 				8FFC17A91A50476300C00A71 /* ViewController.swift in Sources */,
 				8FBF78291A62BA9000F51264 /* Utils.swift in Sources */,
 				8F6B3BD41B3594190026B658 /* Helper.swift in Sources */,
