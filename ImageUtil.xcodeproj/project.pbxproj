@@ -21,6 +21,7 @@
 		8F9C37FA19C584DE00BDD4D3 /* ImageUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F9C37F919C584DE00BDD4D3 /* ImageUtilTests.swift */; };
 		8FBF78271A6156C100F51264 /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF78261A6156C100F51264 /* Structs.swift */; };
 		8FBF78291A62BA9000F51264 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF78281A62BA9000F51264 /* Utils.swift */; };
+		8FF602CF1EEC43F9003358C9 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 8FF602CE1EEC43F9003358C9 /* README.md */; };
 		8FFC17A91A50476300C00A71 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FFC17A81A50476300C00A71 /* ViewController.swift */; };
 		8FFC17AD1A50480F00C00A71 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FFC17AC1A50480F00C00A71 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
@@ -56,6 +57,7 @@
 		8F9C37F919C584DE00BDD4D3 /* ImageUtilTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUtilTests.swift; sourceTree = "<group>"; };
 		8FBF78261A6156C100F51264 /* Structs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Structs.swift; sourceTree = "<group>"; };
 		8FBF78281A62BA9000F51264 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		8FF602CE1EEC43F9003358C9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		8FFC17A81A50476300C00A71 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		8FFC17AC1A50480F00C00A71 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -81,6 +83,7 @@
 		8F9C37D819C584DE00BDD4D3 = {
 			isa = PBXGroup;
 			children = (
+				8FF602CE1EEC43F9003358C9 /* README.md */,
 				8F9C37E319C584DE00BDD4D3 /* ImageUtil */,
 				8F9C37F619C584DE00BDD4D3 /* ImageUtilTests */,
 				8F9C37E219C584DE00BDD4D3 /* Products */,
@@ -275,6 +278,7 @@
 				8F6B3BD41B3594190026B658 /* Helper.swift in Sources */,
 				8F92F9CE19FAA36F0010892F /* Extensions.swift in Sources */,
 				8F92F9CA19FAA0070010892F /* Operators.swift in Sources */,
+				8FF602CF1EEC43F9003358C9 /* README.md in Sources */,
 				8F92F9CC19FAA00F0010892F /* Optional.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
