@@ -229,7 +229,7 @@ class ViewController: NSViewController {
           do {
             try self.fm.moveItem(atPath: oldPath, toPath: destinationPath)
           } catch {
-            print("could not move item to: \(destinationPath)")
+            print("could not move file to: \(destinationPath)")
           }
           newPath = destinationPath
         }
@@ -244,7 +244,20 @@ class ViewController: NSViewController {
           fileNameDate: newFileName.parseDateFromFileName(),
           url: newUrl
         )
-          renamedImageFileData.append(renameImageFile)
+        renamedImageFileData.append(renameImageFile)
+        // do we have a mov file? if yes rename it too
+        let fileUrlWithoutExtension : URL  = image.url.deletingPathExtension()
+        let oldMovFilePath : String = "\(fileUrlWithoutExtension.path).mov"
+        let newMovFilePath : String = "\(newPathAndBaseName).mov"
+        if (self.fm.fileExists(atPath: oldMovFilePath)){
+          // move file
+          do {
+            try self.fm.moveItem(atPath: oldMovFilePath, toPath: newMovFilePath)
+          } catch {
+            print("could not move file to: \(newMovFilePath)")
+          }
+        }
+        //
         self.progressIndicator.doubleValue = 100 * (Double(current) / Double(count))
         current = current + 1
       }
