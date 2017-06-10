@@ -17,7 +17,7 @@ class ResizeModalController: NSViewController {
 	// ----------------------------------------------------------------------------------------------------
 	
 	override func viewDidLoad() {
-		super.viewDidLoad()
+    super.viewDidLoad()
 		// Do view setup here.
 	}
 	
@@ -32,23 +32,22 @@ class ResizeModalController: NSViewController {
 	// MARK: -  @IBAction
 	// ----------------------------------------------------------------------------------------------------
 	
-	@IBAction func resizeModalOk(sender: NSButton) {
+	@IBAction func resizeModalOk(_ sender: NSButton) {
 		resize()
 	}
 	
-	@IBAction func resizeModalCancel(sender: NSButton) {
-		println("resizeModalCancel")
-		self.dismissViewController(self)
+	@IBAction func resizeModalCancel(_ sender: NSButton) {
+		print("resizeModalCancel")
 	}
 	
 	// ----------------------------------------------------------------------------------------------------
 	// MARK: - Private
 	// ----------------------------------------------------------------------------------------------------
 	
-	private func resize() {
-		println("resizeModalOk")
-		println("resizeWidth: \(resizeWidth.stringValue)")
-		println("renameToNumbers: \(renameToNumbers.state)")
+	fileprivate func resize() {
+		print("resizeModalOk")
+		print("resizeWidth: \(resizeWidth.stringValue)")
+		print("renameToNumbers: \(renameToNumbers.state)")
 		//
 		var width : Int = Int(resizeWidth.integerValue)
 		if (width < 1) {

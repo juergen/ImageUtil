@@ -12,10 +12,10 @@ struct ImageFileMetaData {
   
   var name:String
   var ext:String // extension
-  var imageDate:NSDate // date of image meta data
-  var fileDate:NSDate // date of file
-  var fileNameDate:NSDate? // date parsed from filename
-  var url:NSURL
+  var imageDate:Date // date of image meta data
+  var fileDate:Date // date of file
+  var fileNameDate:Date? // date parsed from filename
+  var url:URL
   
 }
 

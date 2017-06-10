@@ -9,9 +9,9 @@
 import Foundation
 
 public func ==~ (input: String, pattern: String) -> Bool {
-  return input.rangeOfString(pattern, options: .RegularExpressionSearch) != nil
+  return input.range(of: pattern, options: .regularExpression) != nil
 }
 
-public func p(printMe: Any) {
-  println("\(printMe)")
+public func p(_ printMe: Any) {
+  print("\(printMe)")
 }

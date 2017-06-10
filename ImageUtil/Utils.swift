@@ -14,11 +14,11 @@ class Utils {
   // MARK: - generall functions
   // ----------------------------------------------------------------------------------------------------
   
-  class func p(printMe:AnyObject?) {
+  class func p(_ printMe:AnyObject?) {
     if let pm: AnyObject = printMe {
-      println("\(pm)")
+      print("\(pm)")
     } else {
-      println("nil")
+      print("nil")
     }
   }
   
@@ -27,120 +27,128 @@ class Utils {
   // ----------------------------------------------------------------------------------------------------
   
   /** will delete directory if it already exists before creating it */
-  class func createOrEmptyDirectory(path:NSString) -> Bool {
-    let fm = NSFileManager.defaultManager()
-    var error:NSError?
-    var exists:Bool = fm.fileExistsAtPath(path as String)
+  class func createOrEmptyDirectory(_ path:NSString) -> Bool {
+    let fm = FileManager.default
+    let exists:Bool = fm.fileExists(atPath: path as String)
     if (exists) {
-      fm.removeItemAtPath(path as String, error: nil)
+      try! fm.removeItem(atPath: path as String)
     }
-    var success:Bool = fm.createDirectoryAtPath(path as String, withIntermediateDirectories:true, attributes:nil, error:&error)
-    if error != nil { println(error) }
-    return success;
+    do {
+      try FileManager.default.createDirectory(atPath: path as String, withIntermediateDirectories: true, attributes: nil)
+    } catch {
+      return false
+    }
+    return true
   }
   
   /** will add counter (and increase it) to path as long as directory already exists before ceating it */
-  class func createDirectory(path:String) -> String? {
-    let fm = NSFileManager.defaultManager()
+  class func createDirectory(_ path:String) -> String? {
+    let fm = FileManager.default
     let basePath = path
     var currentPath = path
     var counter : Int = 1
-    var error:NSError?
-    var exists:Bool = fm.fileExistsAtPath(path as String)
-    while (fm.fileExistsAtPath(currentPath as String)) {
-      currentPath = "\(basePath)_\(counter++)"
-      
+    while (fm.fileExists(atPath: currentPath as String)) {
+      currentPath = "\(basePath)_\(counter)"
+      counter = counter + 1
     }
-    var success:Bool = fm.createDirectoryAtPath(currentPath as String, withIntermediateDirectories:true, attributes:nil, error:&error)
-    if error != nil { println(error) }
-    if (success) {
-      return currentPath
+    do {
+      try FileManager.default.createDirectory(atPath: currentPath as String, withIntermediateDirectories: true, attributes: nil)
+    } catch {
+      return nil
     }
-    return nil;
+    return currentPath
   }
   
   // ----------------------------------------------------------------------------------------------------
   // MARK: - Image
   // ----------------------------------------------------------------------------------------------------
   
-  class func convertToJpg(imageSource:CGImageSource, path:String) -> Bool {
-    let destinationUrl:NSURL = NSURL(fileURLWithPath: path)!
-    let destinationImage = CGImageDestinationCreateWithURL(destinationUrl, kUTTypeJPEG, 1, nil)
-    CGImageDestinationAddImageFromSource(destinationImage, imageSource, 0, nil)
-    let result: Bool = CGImageDestinationFinalize(destinationImage)
+  class func convertToJpg(_ imageSource:CGImageSource, path:String) -> Bool {
+    let destinationUrl:URL = URL(fileURLWithPath: path)
+    let destinationImage = CGImageDestinationCreateWithURL(destinationUrl as CFURL, kUTTypeJPEG, 1, nil)
+    CGImageDestinationAddImageFromSource(destinationImage!, imageSource, 0, nil)
+    let result: Bool = CGImageDestinationFinalize(destinationImage!)
     return result
   }
   
-  class func resizeImage(imageUrl:NSURL, max:Int, destinationPath:String) -> Bool {
+  class func resizeImage(_ imageUrl:URL, max:Int, destinationPath:String) -> Bool {
     // get CGImageSource from provided ulr
-    if let imageSource:CGImageSource = CGImageSourceCreateWithURL(imageUrl, nil) {
-      let options : [NSObject:AnyObject] = [
-        kCGImageSourceThumbnailMaxPixelSize: max,
-        kCGImageSourceCreateThumbnailFromImageAlways: true
+    if let imageSource:CGImageSource = CGImageSourceCreateWithURL(imageUrl as CFURL, nil) {
+      let options : [AnyHashable: Any] = [
+        kCGImageSourceThumbnailMaxPixelSize as AnyHashable: max,
+        kCGImageSourceCreateThumbnailFromImageAlways as AnyHashable: true
       ]
       // scale image
-      let scaledImage : CGImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, options)
+      let scaledImage : CGImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, options as CFDictionary)!
       // save image to provided destinationPath
-      let destinationUrl : NSURL = NSURL(fileURLWithPath: destinationPath)!
-      let destinationImage = CGImageDestinationCreateWithURL(destinationUrl, kUTTypeJPEG, 1, nil)
-      CGImageDestinationAddImage(destinationImage, scaledImage, nil)
-      let result: Bool = CGImageDestinationFinalize(destinationImage)
+      let destinationUrl : URL = URL(fileURLWithPath: destinationPath)
+      let destinationImage = CGImageDestinationCreateWithURL(destinationUrl as CFURL, kUTTypeJPEG, 1, nil)
+      CGImageDestinationAddImage(destinationImage!, scaledImage, nil)
+      let result: Bool = CGImageDestinationFinalize(destinationImage!)
       return result
     }
     return false
   }
   
-  class func renameToNumberedFiles(dirPath:String, filterExtension:String) -> Bool {
-    let fm = NSFileManager.defaultManager()
+  class func renameToNumberedFiles(_ dirPath:String, filterExtension:String) -> Bool {
+    let fm = FileManager.default
     // check if dir exists
-    var error:NSError?
-    var isDir:ObjCBool=false;
-    var exists:Bool = fm.fileExistsAtPath(dirPath, isDirectory:&isDir)
-    if (!exists && !isDir) { return false }
+    var isDir:ObjCBool = ObjCBool(false)
+    let exists:Bool = fm.fileExists(atPath: dirPath, isDirectory:&isDir)
+    if (!exists && !isDir.boolValue) { return false }
     // read content of dir
-    let dirUrl : NSURL = NSURL(fileURLWithPath: dirPath)!
-    let contents : [NSURL] = fm.contentsOfDirectoryAtURL(dirUrl,
-      includingPropertiesForKeys: [NSURLCreationDateKey],
-      options: .SkipsHiddenFiles,
-      error: nil) as! [NSURL]
+    let dirUrl : URL = URL(fileURLWithPath: dirPath)
+    let contents : [URL]
+    do {
+      try contents = fm.contentsOfDirectory(at: dirUrl,
+      includingPropertiesForKeys: [URLResourceKey.creationDateKey],
+      options: .skipsHiddenFiles)
+    } catch {
+      return false
+    }
     // filter file names
-    var filteredFiles = [String:NSURL]()
-    for (index, url:NSURL) in enumerate(contents) {
-      let pathExtension : String = url.pathExtension ?? ""
+    var filteredFiles = [String:URL]()
+    for (index, url) in contents.enumerated() {
+      let pathExtension : String = url.pathExtension
       if let fileName:String = url.lastPathComponent {
-        if contains([filterExtension], pathExtension.lowercaseString) {
+        if filterExtension.contains(pathExtension.lowercased()) {
           filteredFiles[fileName] = url
         }
       }
     }
     // sort file names
-    let sortedFileNames = sorted(filteredFiles.keys, { s1, s2 in return s1 < s2 } )
+    let sortedFileNames = filteredFiles.keys.sorted()
     // rename
-    for (index, fileName:String) in enumerate(sortedFileNames) {
+    for (index, fileName) in sortedFileNames.enumerated() {
       // e.g. "1" -> "001"
       let baseName = String(format: "%03d", index + 1)
       let newName = "\(baseName).\(filterExtension)"
-      let sourceUrl:NSURL = filteredFiles[fileName]!
-      let newURL:NSURL = dirUrl.URLByAppendingPathComponent(newName)
-      fm.moveItemAtURL(sourceUrl, toURL:newURL, error: nil)
-      println("renamed \(sourceUrl.lastPathComponent!) -> \(newURL.lastPathComponent!)")
+      let sourceUrl:URL = filteredFiles[fileName]!
+      let newURL:URL = dirUrl.appendingPathComponent(newName)
+      do {
+        try fm.moveItem(at: sourceUrl, to:newURL)
+        print("renamed \(sourceUrl.lastPathComponent) -> \(newURL.lastPathComponent)")
+      } catch {
+        continue
+      }
+      
     }
     return true
   }
   
-  class func getDateTime(imageSource:CGImageSource) -> NSDate {
-    let int:Int = Int.min
-    let metadataAtIndex = CGImageSourceCopyMetadataAtIndex(imageSource, int, nil)
-    let imageDict: Dictionary? = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) as Dictionary
-    //p(imageDict)
-    return imageDict <|> "{TIFF}" <| "DateTime" >>- {
-      ($0 as! String).parseDate("yyyy:MM:dd HH:mm:ss")
-      } ?? NSDate.defaultDate()
+  class func getDateTime(_ imageSource:CGImageSource) -> Date {
+    let imageDict = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) as! [String:Any]
+    if let tiffDict = imageDict["{TIFF}"] as? [String:Any] {
+      if let dateTimeString = tiffDict["DateTime"] as? String {
+        return dateTimeString.parseDate("yyyy:MM:dd HH:mm:ss")
+      }
+    }
+    return Date.defaultDate()
   }
   
-  class func setDateTime(imageUrl:NSURL, date:NSDate) -> Bool {
+  class func setDateTime(_ imageUrl:URL, date:Date) -> Bool {
     //
-    if let imageSource:CGImageSource = CGImageSourceCreateWithURL(imageUrl, nil) {
+    if let imageSource:CGImageSource = CGImageSourceCreateWithURL(imageUrl as CFURL, nil) {
       let dateString = date.formattedString(Constant.imageDateTimeFormat)
       // build dictionary to update date time
       let tiff = [kCGImagePropertyTIFFDateTime as String:dateString]
@@ -153,9 +161,9 @@ class Utils {
         kCGImagePropertyExifDictionary as String:exif
       ]
       // update image with meta data
-      let destination = CGImageDestinationCreateWithURL(imageUrl, kUTTypeJPEG, 1, nil)
-      CGImageDestinationAddImageFromSource(destination,imageSource,0, metaData)
-      let result: Bool = CGImageDestinationFinalize(destination)
+      let destination = CGImageDestinationCreateWithURL(imageUrl as CFURL, kUTTypeJPEG, 1, nil)
+      CGImageDestinationAddImageFromSource(destination!,imageSource,0, metaData as CFDictionary)
+      let result: Bool = CGImageDestinationFinalize(destination!)
       return result
     }
     return false

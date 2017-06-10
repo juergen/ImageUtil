@@ -8,65 +8,61 @@
 
 import Foundation
 
-extension NSDate {
+extension Date {
   
-  class func defaultDate() -> NSDate {
+  static func defaultDate() -> Date {
     return "2000:01:01 00:00:00".parseDate("yyyy:MM:dd HH:mm:ss")
   }
   
   func formattedString(_ format:String="yyyy-MM-dd_HH-mm") -> String {
-    let dateStringFormatter = NSDateFormatter()
+    let dateStringFormatter = DateFormatter()
     dateStringFormatter.dateFormat = format
-    return dateStringFormatter.stringFromDate(self)
+    return dateStringFormatter.string(from: self)
   }
   
-  func parseImageDate(dateStr:String, format:String="yyyy-MM-dd") -> NSDate {
-    var dateFmt = NSDateFormatter()
-    dateFmt.timeZone = NSTimeZone()
-    dateFmt.dateFormat = format
-    if let date = dateFmt.dateFromString(dateStr) {
+  func parseImageDate(_ dateStr:String, format:String="yyyy-MM-dd") -> Date {
+    let dateFmt = DateFormatter()
+    if let date = dateFmt.date(from: dateStr) {
       return date
     }
-    return NSDate.defaultDate()
-    //println("\(dateStr) -> \(date)")
+    return Date.defaultDate()
+    //print("\(dateStr) -> \(date)")
   }
   
 }
 
 extension String {
   
-  func parseDate(_ format:String="yyyy-MM-dd") -> NSDate {
-    var dateFmt = NSDateFormatter()
-    dateFmt.timeZone = NSTimeZone()
+  func parseDate(_ format:String="yyyy-MM-dd") -> Date {
+    let dateFmt = DateFormatter()
     dateFmt.dateFormat = format
-    if let date = dateFmt.dateFromString(self) {
+    if let date = dateFmt.date(from: self) {
       return date
     }
-    return NSDate.defaultDate()
-    //println("\(dateStr) -> \(date)")
+    return Date.defaultDate()
+    //print("\(dateStr) -> \(date)")
   }
   
-  func substringWithPattern(pattern:String) -> String? {
-    if let range = self.rangeOfString(pattern, options: .RegularExpressionSearch) {
-      return self.substringWithRange(range)
+  func substringWithPattern(_ pattern:String) -> String? {
+    if let range = self.range(of: pattern, options: .regularExpression) {
+      return self.substring(with: range)
     }
     return nil
   }
   
-  func substringFromIntIndex(i:Int) -> String {
-    let index: String.Index = advance(self.startIndex, i)
-    return self.substringFromIndex(index)
+  func substringFromIntIndex(_ i:Int) -> String {
+    let index: String.Index = self.index(startIndex, offsetBy: i)
+    return self.substring(from: index)
   }
   
-  func parseDateFromFileName() -> NSDate? {
-    var dateFmt = NSDateFormatter()
-    dateFmt.timeZone = NSTimeZone()
-    for i in 0...count(self) {
+  func parseDateFromFileName() -> Date? {
+    let dateFmt = DateFormatter()
+    for i in 0...self.characters.count {
       let s = self.substringFromIntIndex(i)
       for (format, pattern) in Constant.datePatterns {
         if let dateString = s.substringWithPattern(pattern) {
           dateFmt.dateFormat = format
-          if let date = dateFmt.dateFromString(dateString) {
+          if let date = dateFmt.date(from: dateString) {
             return date
           }
         }
@@ -75,10 +71,34 @@ extension String {
     return nil
   }
   
+  var lastPathComponent: String {
+    return (self as NSString).lastPathComponent
+  }
+  var pathExtension: String {
+    return (self as NSString).pathExtension
+  }
+  var stringByDeletingLastPathComponent: String {
+    return (self as NSString).deletingLastPathComponent
+  }
+  var stringByDeletingPathExtension: String {
+    return (self as NSString).deletingPathExtension
+  }
+  var pathComponents: [String] {
+    return (self as NSString).pathComponents
+  }
+  func stringByAppendingPathComponent(path: String) -> String {
+    let nsSt = self as NSString
+    return nsSt.appendingPathComponent(path)
+  }
+  func stringByAppendingPathExtension(ext: String) -> String? {
+    let nsSt = self as NSString
+    return nsSt.appendingPathExtension(ext)
+  }
+  
 }
 
 extension Double {
-  func format(f: String) -> String {
-    return NSString(format: "%\(f)f", self) as String
+  func format(_ f: String) -> String {
+    return NSString(format: "%\(f)f" as NSString, self) as String
   }
 }

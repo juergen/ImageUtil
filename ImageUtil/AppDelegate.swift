@@ -11,13 +11,13 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-	func applicationDidFinishLaunching(aNotification: NSNotification) {
+	func applicationDidFinishLaunching(_ aNotification: Notification) {
 		// Insert code here to initialize your application
     // set default timezone
-    NSTimeZone.setDefaultTimeZone(NSTimeZone(forSecondsFromGMT: +0))
+    NSTimeZone.default = TimeZone(secondsFromGMT: +0)!
 	}
 
-	func applicationWillTerminate(aNotification: NSNotification) {
+	func applicationWillTerminate(_ aNotification: Notification) {
 		// Insert code here to tear down your application
 	}
 
