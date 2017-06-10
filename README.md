@@ -1,5 +1,4 @@
-ImageUtil
-=========
+# ImageUtil
 
 Rename Images in OSX (Swift) experiment.
 Now migrated to Swift 3.1
@@ -28,3 +27,6 @@ e.g. 2014-01-25_17-04_1_jb(IMG01234).jpg, 2014-01-25_17-04_2_jb(IMG01235).jpg
 When exporting from orginals from the Mac Photos app, the life photos are exported as .jpg and .mov.
 The .mov files will now also be renamed.
 
+## License
+
+See the [LICENSE](LICENSE.md) file for license rights and limitations (MIT).
