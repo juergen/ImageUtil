@@ -127,8 +127,8 @@ class ViewController: NSViewController {
     openPanel.allowsMultipleSelection = false
     //
     var pathString : String! = ""
-    if openPanel.runModal() == NSOKButton    {
-      imageFolder = openPanel.urls[0] as? URL
+    if openPanel.runModal() == NSModalResponseOK    {
+      imageFolder = openPanel.urls[0] as URL
       readMetaDataOfFilesInDirectory(imageFolder!)
       fileListTableView.reloadData()
       pathString = imageFolder?.path
@@ -166,13 +166,13 @@ class ViewController: NSViewController {
     var dateStrings : Array<String> = []
     let count = imageFileData.count
     var current : Int = 1
-    DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async(execute: {
+    DispatchQueue.global(qos: .background).async(execute: {
       // iterate over images
       for image:ImageFileMetaData in self.imageFileData {
         var counter : Int = 1
-        var baseDate: Date = self.getSelectedDate(self.dateFromSelector, metaData: image)
-        var date = baseDate.addingTimeInterval(offset)
-        var baseName = date.formattedString()
+        let baseDate: Date = self.getSelectedDate(self.dateFromSelector, metaData: image)
+        let date = baseDate.addingTimeInterval(offset)
+        let baseName = date.formattedString()
         // ensure name is unique if we have files with same date
         var newFileName: String = "\(baseName)_\(counter)"
         counter = counter + 1
@@ -187,14 +187,13 @@ class ViewController: NSViewController {
         }
         // append original name
         if (self.appendOriginalName.state == 1) {
-          if let nameWOExtension : String = image.url.deletingPathExtension().lastPathComponent {
-            // remove potential previous original file name
-            let start = nameWOExtension.startIndex
-            if let end = nameWOExtension.characters.index(of: "(") {
-              newFileName += "(\(nameWOExtension[start..<end]))"
-            } else {
-              newFileName += "(\(nameWOExtension))"
-            }
+          let nameWOExtension : String = image.url.deletingPathExtension().lastPathComponent
+          // remove potential previous original file name
+          let start = nameWOExtension.startIndex
+          if let end = nameWOExtension.characters.index(of: "(") {
+            newFileName += "(\(nameWOExtension[start..<end]))"
+          } else {
+            newFileName += "(\(nameWOExtension))"
           }
         }
         // add file extension
@@ -236,17 +235,16 @@ class ViewController: NSViewController {
         }
         print("renamed to: \(newFileName)")
         // fileURLWithPath handle spaces in newPath
-        if let newUrl:URL = URL(fileURLWithPath: newPath) {
-          let renameImageFile = ImageFileMetaData(
-            name:newUrl.lastPathComponent,
-            ext:newUrl.pathExtension,
-            imageDate:image.imageDate,
-            fileDate: newFileDate,
-            fileNameDate: newFileName.parseDateFromFileName(),
-            url: newUrl
-          )
+        let newUrl:URL = URL(fileURLWithPath: newPath)
+        let renameImageFile = ImageFileMetaData(
+          name:newUrl.lastPathComponent,
+          ext:newUrl.pathExtension,
+          imageDate:image.imageDate,
+          fileDate: newFileDate,
+          fileNameDate: newFileName.parseDateFromFileName(),
+          url: newUrl
+        )
           renamedImageFileData.append(renameImageFile)
-        }
         self.progressIndicator.doubleValue = 100 * (Double(current) / Double(count))
         current = current + 1
       }
@@ -275,12 +273,11 @@ class ViewController: NSViewController {
     }
     let count = imageFileData.count
     var current : Int = 1
-    DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async(execute: {
+    DispatchQueue.global(qos: .background).async(execute: {
       // iterate over images
       for image:ImageFileMetaData in self.imageFileData {
-        var counter : Int = 1
-        var baseDate: Date = self.getSelectedDate(self.dateFromSelector, metaData: image)
-        var date = baseDate.addingTimeInterval(offset)
+        let baseDate: Date = self.getSelectedDate(self.dateFromSelector, metaData: image)
+        let date = baseDate.addingTimeInterval(offset)
         Utils.setDateTime(image.url, date: date)
         let updatedImageFile = ImageFileMetaData(
           name:image.name,
@@ -335,7 +332,7 @@ class ViewController: NSViewController {
     let count = contents.count
     imageFileData = [] // used to avoid duplicate new file names
     // do not block UI
-    DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async(execute: {
+    DispatchQueue.global(qos: .background).async(execute: {
       for (index, url) in contents.enumerated() {
         let progress : Double = 100 * (Double(index + 1) / Double(count))
         let progressFormatted: String  = progress.format(".1")
@@ -387,7 +384,7 @@ class ViewController: NSViewController {
       return
     }
     var current : Int = 1
-    DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async(execute: {
+    DispatchQueue.global(qos: .background).async(execute: {
       // generate slides folder
       var destinationDirPath : String?
       if let parentPath : String = self.imageFolder?.path {
@@ -435,7 +432,7 @@ extension ViewController: NSTableViewDelegate {
       value = file.name as AnyObject
     case "FileNameDate" :
       if let fileNameDate = file.fileNameDate {
-        value = file.fileNameDate as AnyObject
+        value = fileNameDate as AnyObject
       } else {
         value = "./." as AnyObject
       }
@@ -443,7 +440,7 @@ extension ViewController: NSTableViewDelegate {
       value = file.imageDate as AnyObject
     case "FileDate" :
       value = file.fileDate as AnyObject
-    default: "./."
+    default: value = "./." as AnyObject
     }
     var stringValue: String
     if (value! is Date) {

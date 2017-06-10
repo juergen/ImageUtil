@@ -49,7 +49,7 @@ class ResizeModalController: NSViewController {
 		print("resizeWidth: \(resizeWidth.stringValue)")
 		print("renameToNumbers: \(renameToNumbers.state)")
 		//
-		var width : Int = Int(resizeWidth.integerValue)
+		let width : Int = Int(resizeWidth.integerValue)
 		if (width < 1) {
 			// ToDo inform user
 			self.dismissViewController(self)

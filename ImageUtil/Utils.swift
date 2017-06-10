@@ -63,7 +63,7 @@ class Utils {
   // MARK: - Image
   // ----------------------------------------------------------------------------------------------------
   
-  class func convertToJpg(_ imageSource:CGImageSource, path:String) -> Bool {
+  @discardableResult class func convertToJpg(_ imageSource:CGImageSource, path:String) -> Bool {
     let destinationUrl:URL = URL(fileURLWithPath: path)
     let destinationImage = CGImageDestinationCreateWithURL(destinationUrl as CFURL, kUTTypeJPEG, 1, nil)
     CGImageDestinationAddImageFromSource(destinationImage!, imageSource, 0, nil)
@@ -71,7 +71,7 @@ class Utils {
     return result
   }
   
-  class func resizeImage(_ imageUrl:URL, max:Int, destinationPath:String) -> Bool {
+  @discardableResult class func resizeImage(_ imageUrl:URL, max:Int, destinationPath:String) -> Bool {
     // get CGImageSource from provided ulr
     if let imageSource:CGImageSource = CGImageSourceCreateWithURL(imageUrl as CFURL, nil) {
       let options : [AnyHashable: Any] = [
@@ -90,7 +90,7 @@ class Utils {
     return false
   }
   
-  class func renameToNumberedFiles(_ dirPath:String, filterExtension:String) -> Bool {
+  @discardableResult class func renameToNumberedFiles(_ dirPath:String, filterExtension:String) -> Bool {
     let fm = FileManager.default
     // check if dir exists
     var isDir:ObjCBool = ObjCBool(false)
@@ -108,13 +108,13 @@ class Utils {
     }
     // filter file names
     var filteredFiles = [String:URL]()
-    for (index, url) in contents.enumerated() {
+    for url in contents {
       let pathExtension : String = url.pathExtension
-      if let fileName:String = url.lastPathComponent {
-        if filterExtension.contains(pathExtension.lowercased()) {
-          filteredFiles[fileName] = url
-        }
+      let fileName:String = url.lastPathComponent
+      if filterExtension.contains(pathExtension.lowercased()) {
+        filteredFiles[fileName] = url
       }
+      
     }
     // sort file names
     let sortedFileNames = filteredFiles.keys.sorted()
@@ -146,7 +146,7 @@ class Utils {
     return Date.defaultDate()
   }
   
-  class func setDateTime(_ imageUrl:URL, date:Date) -> Bool {
+  @discardableResult class func setDateTime(_ imageUrl:URL, date:Date) -> Bool {
     //
     if let imageSource:CGImageSource = CGImageSourceCreateWithURL(imageUrl as CFURL, nil) {
       let dateString = date.formattedString(Constant.imageDateTimeFormat)
