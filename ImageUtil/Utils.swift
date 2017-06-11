@@ -138,10 +138,10 @@ class Utils {
   
   class func getDateTime(_ imageSource:CGImageSource) -> Date {
     let imageDict = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) as! [String:Any]
-    if let tiffDict = imageDict["{TIFF}"] as? [String:Any] {
-      if let dateTimeString = tiffDict["DateTime"] as? String {
-        return dateTimeString.parseDate("yyyy:MM:dd HH:mm:ss")
-      }
+    if
+      let tiffDict = imageDict["{TIFF}"] as? [String:Any],
+      let dateTimeString = tiffDict["DateTime"] as? String {
+      return dateTimeString.parseDate("yyyy:MM:dd HH:mm:ss")
     }
     return Date.defaultDate()
   }
