@@ -20,6 +20,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	func applicationWillTerminate(_ aNotification: Notification) {
 		// Insert code here to tear down your application
 	}
+  
+  func applicationShouldHandleReopen(theApplication: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+    if !flag {
+      for window: AnyObject in theApplication.windows {
+        window.makeKeyAndOrderFront(self)
+      }
+    }
+    return true
+  }
 
 }
 
