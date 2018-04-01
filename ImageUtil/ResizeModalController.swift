@@ -55,7 +55,7 @@ class ResizeModalController: NSViewController {
 			self.dismissViewController(self)
 			return
 		}
-		let rename:Bool = self.renameToNumbers.state == 1
+		let rename:Bool = self.renameToNumbers.state.rawValue == 1
 		self.dismissViewController(self)
 		callBack >>- {
 			$0(width, rename)

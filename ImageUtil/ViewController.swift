@@ -94,7 +94,7 @@ class ViewController: NSViewController {
   }
   
   @IBAction func resizeMenu(_ sender: NSButton) {
-    self.performSegue(withIdentifier: "resizeSegue", sender: self)
+    self.performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "resizeSegue"), sender: self)
   }
   
   @IBAction func update(_ sender: NSButton) {
@@ -127,7 +127,7 @@ class ViewController: NSViewController {
     openPanel.allowsMultipleSelection = false
     //
     var pathString : String! = ""
-    if openPanel.runModal() == NSModalResponseOK    {
+    if openPanel.runModal() == NSApplication.ModalResponse.OK    {
       imageFolder = openPanel.urls[0] as URL
       readMetaDataOfFilesInDirectory(imageFolder!)
       fileListTableView.reloadData()
@@ -155,7 +155,7 @@ class ViewController: NSViewController {
     // hours based offset
     var offset : Double = Double(60 * 60) * Double(hours.floatValue)
     // add new start date based offset
-    if (useNewStartDate.state == 1 && imageFileData.count > 0) {
+    if (useNewStartDate.state.rawValue == 1 && imageFileData.count > 0) {
       print("we have a newStartDate!")
       let firstElement = imageFileData[0]
       let dateFirstImage: Date = self.getSelectedDate(dateFromSelector, metaData: firstElement)
@@ -186,11 +186,11 @@ class ViewController: NSViewController {
           newFileName += "_\(self.postfix.stringValue)"
         }
         // append original name
-        if (self.appendOriginalName.state == 1) {
+        if (self.appendOriginalName.state.rawValue == 1) {
           let nameWOExtension : String = image.url.deletingPathExtension().lastPathComponent
           // remove potential previous original file name
           let start = nameWOExtension.startIndex
-          if let end = nameWOExtension.characters.index(of: "(") {
+          if let end = nameWOExtension.index(of: "(") {
             newFileName += "(\(nameWOExtension[start..<end]))"
           } else {
             newFileName += "(\(nameWOExtension))"
@@ -277,7 +277,7 @@ class ViewController: NSViewController {
     // hours based offset
     var offset : Double = Double(60 * 60) * Double(hours.floatValue)
     // add new start date based offset
-    if (useNewStartDate.state == 1 && imageFileData.count > 0) {
+    if (useNewStartDate.state.rawValue == 1 && imageFileData.count > 0) {
       print("we have a newStartDate!")
       let firstElement = imageFileData[0]
       let dateFirstImage: Date = self.getSelectedDate(dateFromSelector, metaData: firstElement)
@@ -437,10 +437,10 @@ extension ViewController: NSTableViewDelegate {
   
   func tableView(_ tableView: NSTableView, viewFor viewForTableColumn: NSTableColumn?, row: Int) -> NSView? {
     let identifier = viewForTableColumn!.identifier
-    let cell = fileListTableView.make(withIdentifier: identifier, owner: self) as! NSTableCellView
+    let cell = fileListTableView.makeView(withIdentifier: identifier, owner: self) as! NSTableCellView
     let file : ImageFileMetaData = imageFileData[row]
     var value: AnyObject?
-    switch identifier {
+    switch identifier.rawValue {
     case "FileName" :
       value = file.name as AnyObject
     case "FileNameDate" :
@@ -457,7 +457,7 @@ extension ViewController: NSTableViewDelegate {
     }
     var stringValue: String
     if (value! is Date) {
-      stringValue = (value as! Date).formattedString()
+      stringValue = (value as! Date).formattedString("yyyy-MM-dd_HH-mm-ss")
     } else if (value is String) {
       stringValue = value as! String
     } else {

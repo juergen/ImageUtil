@@ -18,7 +18,7 @@ class Regex {
   func test(_ input: String) -> Bool {
     do {
       let expression = try NSRegularExpression(pattern: pattern, options: .caseInsensitive)
-      let matches = expression.matches(in: input, options: [], range: NSMakeRange(0, input.characters.count))
+      let matches = expression.matches(in: input, options: [], range: NSMakeRange(0, input.count))
       return matches.count > 0
     } catch {
       return false

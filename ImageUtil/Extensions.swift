@@ -45,19 +45,22 @@ extension String {
   
   func substringWithPattern(_ pattern:String) -> String? {
     if let range = self.range(of: pattern, options: .regularExpression) {
-      return self.substring(with: range)
+      return String(self[range])
     }
     return nil
   }
   
   func substringFromIntIndex(_ i:Int) -> String {
+    if (i > self.count) {
+      return self
+    }
     let index: String.Index = self.index(startIndex, offsetBy: i)
-    return self.substring(from: index)
+    return String(self[index...])
   }
   
   func parseDateFromFileName() -> Date? {
     let dateFmt = DateFormatter()
-    for i in 0...self.characters.count {
+    for i in 0...self.count {
       let s = self.substringFromIntIndex(i)
       for (format, pattern) in Constant.datePatterns {
         if let dateString = s.substringWithPattern(pattern) {
