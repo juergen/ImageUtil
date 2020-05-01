@@ -377,6 +377,7 @@ class ViewController: NSViewController {
         )
       
         self.imageFileData.append(imageFile)
+        // print("imageFileData.append \(fileName)")
         DispatchQueue.main.async {
           self.progressIndicator.doubleValue = progress
         }
@@ -384,6 +385,7 @@ class ViewController: NSViewController {
       print("processed \(String(describing: self.imageFileData.count)) files")
       DispatchQueue.main.async {
         self.fileListTableView.reloadData()
+        print("fileListTableView.reloadData()")
         self.progressIndicator.stopAnimation(self)
         return
       }
@@ -463,7 +465,8 @@ extension ViewController: NSTableViewDelegate {
     } else {
       stringValue = "./."
     }
-    cell.textField >>- { $0.stringValue = stringValue }
+    cell.textField?.stringValue = stringValue
+    print("cell.textField?.stringValue = \(stringValue)")
     return cell
   }
 }
