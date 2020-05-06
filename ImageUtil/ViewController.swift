@@ -352,11 +352,9 @@ class ViewController: NSViewController {
         // do we have an image?
         let pathExtension : String = url.pathExtension
         if !["jpeg", "jpg", "cr2"].contains(pathExtension.lowercased()) {
-            // ensure that progress indicator is also updated
-            DispatchQueue.main.async {
-                self.progressIndicator.doubleValue = progress
-            }
-            continue
+          // ensure that progress indicator is also updated
+          self.progressIndicator.doubleValue = progress
+          continue
         }
         // do we have a filename?
         let fileName : String = url.lastPathComponent
@@ -382,9 +380,7 @@ class ViewController: NSViewController {
         if (index < 10) {
           //self.fileListTableView.reloadData()
         }
-        DispatchQueue.main.async {
-            self.progressIndicator.doubleValue = progress
-        }
+        self.progressIndicator.doubleValue = progress
       }
       DispatchQueue.main.async(execute: {
         self.fileListTableView.reloadData()
