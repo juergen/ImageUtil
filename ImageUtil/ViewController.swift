@@ -353,7 +353,9 @@ class ViewController: NSViewController {
         let pathExtension : String = url.pathExtension
         if !["jpeg", "jpg", "cr2"].contains(pathExtension.lowercased()) {
           // ensure that progress indicator is also updated
-          self.progressIndicator.doubleValue = progress
+          DispatchQueue.main.async {
+            self.progressIndicator.doubleValue = progress
+          }
           continue
         }
         // do we have a filename?
