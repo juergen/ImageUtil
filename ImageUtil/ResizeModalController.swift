@@ -52,11 +52,11 @@ class ResizeModalController: NSViewController {
 		let width : Int = Int(resizeWidth.integerValue)
 		if (width < 1) {
 			// ToDo inform user
-			self.dismissViewController(self)
+			self.dismiss(self)
 			return
 		}
 		let rename:Bool = self.renameToNumbers.state.rawValue == 1
-		self.dismissViewController(self)
+		self.dismiss(self)
 		callBack >>- {
 			$0(width, rename)
 		}

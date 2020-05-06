@@ -94,7 +94,7 @@ class ViewController: NSViewController {
   }
   
   @IBAction func resizeMenu(_ sender: NSButton) {
-    self.performSegue(withIdentifier: NSStoryboardSegue.Identifier(rawValue: "resizeSegue"), sender: self)
+    self.performSegue(withIdentifier: "resizeSegue", sender: self)
   }
   
   @IBAction func update(_ sender: NSButton) {
@@ -130,7 +130,7 @@ class ViewController: NSViewController {
     if openPanel.runModal() == NSApplication.ModalResponse.OK    {
       imageFolder = openPanel.urls[0] as URL
       readMetaDataOfFilesInDirectory(imageFolder!)
-      fileListTableView.reloadData()
+      //fileListTableView.reloadData()
       pathString = imageFolder?.path
     } else {
       pathString = ""
@@ -190,7 +190,7 @@ class ViewController: NSViewController {
           let nameWOExtension : String = image.url.deletingPathExtension().lastPathComponent
           // remove potential previous original file name
           let start = nameWOExtension.startIndex
-          if let end = nameWOExtension.index(of: "(") {
+          if let end = nameWOExtension.firstIndex(of: "(") {
             newFileName += "(\(nameWOExtension[start..<end]))"
           } else {
             newFileName += "(\(nameWOExtension))"
@@ -200,7 +200,7 @@ class ViewController: NSViewController {
         let ext : String? = URL(string: image.name)?.pathExtension.lowercased()
         // rename
         let oldPath : String! = image.url.path
-        print("path: \(oldPath)")
+        print("path: \(String(describing: oldPath))")
         let basePath : String! = (oldPath as NSString).deletingLastPathComponent
         let newPathAndBaseName : String = basePath.stringByAppendingPathComponent(path: newFileName)
         print("newPath: \(newPathAndBaseName)")
@@ -345,7 +345,7 @@ class ViewController: NSViewController {
     let count = contents.count
     imageFileData = [] // used to avoid duplicate new file names
     // do not block UI
-    DispatchQueue.global(qos: .background).async(execute: {
+    DispatchQueue.global(qos: .background).async {
       for (index, url) in contents.enumerated() {
         let progress : Double = 100 * (Double(index + 1) / Double(count))
         let progressFormatted: String  = progress.format(".1")
@@ -353,7 +353,9 @@ class ViewController: NSViewController {
         let pathExtension : String = url.pathExtension
         if !["jpeg", "jpg", "cr2"].contains(pathExtension.lowercased()) {
           // ensure that progress indicator is also updated
-          self.progressIndicator.doubleValue = progress
+          DispatchQueue.main.async {
+            self.progressIndicator.doubleValue = progress
+          }
           continue
         }
         // do we have a filename?
@@ -375,19 +377,21 @@ class ViewController: NSViewController {
           fileNameDate: fileName.parseDateFromFileName(),
           url: url
         )
-        
+      
         self.imageFileData.append(imageFile)
-        if (index < 10) {
-          //self.fileListTableView.reloadData()
+        // print("imageFileData.append \(fileName)")
+        DispatchQueue.main.async {
+          self.progressIndicator.doubleValue = progress
         }
-        self.progressIndicator.doubleValue = progress
       }
-      DispatchQueue.main.async(execute: {
+      print("processed \(String(describing: self.imageFileData.count)) files")
+      DispatchQueue.main.async {
         self.fileListTableView.reloadData()
+        print("fileListTableView.reloadData()")
         self.progressIndicator.stopAnimation(self)
         return
-      })
-    })
+      }
+    }
     
   }
   
@@ -463,7 +467,8 @@ extension ViewController: NSTableViewDelegate {
     } else {
       stringValue = "./."
     }
-    cell.textField >>- { $0.stringValue = stringValue }
+    cell.textField?.stringValue = stringValue
+    print("cell.textField?.stringValue = \(stringValue)")
     return cell
   }
 }
