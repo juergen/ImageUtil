@@ -14,9 +14,9 @@ class ViewController: NSViewController {
   var imageFileData = [ImageFileMetaData]()
   let fm = FileManager.default
   
-  // ----------------------------------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // MARK: - Lifecycle
-  // ----------------------------------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -39,9 +39,9 @@ class ViewController: NSViewController {
     // Insert code here to tear down your application
   }
   
-  // ----------------------------------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // MARK: - Segue
-  // ----------------------------------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   
   override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
     print("in prepareForSegue")
@@ -51,9 +51,9 @@ class ViewController: NSViewController {
     }
   }
   
-  // ----------------------------------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // MARK: -  @IBOutlet
-  // ----------------------------------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   
   //@IBOutlet weak var window: NSWindow!
   @IBOutlet weak var pathTextField: NSTextField!
@@ -69,9 +69,9 @@ class ViewController: NSViewController {
   @IBOutlet weak var actionSelector: NSMatrix!
   
   
-  // ----------------------------------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // MARK: -  @IBAction
-  // ----------------------------------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   
   @IBAction func openDocumentMenu(_ sender: NSMenuItem) {
     selectFolder()
@@ -110,9 +110,9 @@ class ViewController: NSViewController {
   }
 
   
-  // ----------------------------------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // MARK: - Private
-  // ----------------------------------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   
   fileprivate func clearTable() {
     imageFileData = []
@@ -323,7 +323,7 @@ class ViewController: NSViewController {
   }
   
   fileprivate func getSelectedDate(_ selectedRow:Int, metaData:ImageFileMetaData) -> Date {
-      switch (selectedRow, metaData.fileNameDate) {
+    switch (selectedRow, metaData.fileNameDate) {
       case (0, _):
         return metaData.imageDate as Date
       case (1, _):
@@ -332,8 +332,8 @@ class ViewController: NSViewController {
         return fileNameDate as Date
       default:
         return metaData.imageDate as Date
-      }
-
+    }
+    
   }
   
   fileprivate func readMetaDataOfFilesInDirectory(_ dir:URL) {
@@ -449,9 +449,9 @@ class ViewController: NSViewController {
   
 }
 
-// ----------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 // MARK: - TableView
-// ----------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 extension ViewController: NSTableViewDelegate {
   
