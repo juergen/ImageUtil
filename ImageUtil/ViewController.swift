@@ -340,7 +340,10 @@ class ViewController: NSViewController {
       print("could not read metaData of \(dir)")
       return
     }
-    
+    // sort by filename, in case files contain same date we use the filename to determine the order
+    contents.sort {
+        $0.lastPathComponent < $1.lastPathComponent
+    }
     //
     let count = contents.count
     imageFileData = [] // used to avoid duplicate new file names
