@@ -154,11 +154,12 @@ class ViewController: NSViewController {
     //
     // hours based offset
     var offset : Double = Double(60 * 60) * Double(hours.floatValue)
+    let selectedRow = self.dateFromSelector.selectedRow
     // add new start date based offset
     if (useNewStartDate.state.rawValue == 1 && imageFileData.count > 0) {
       print("we have a newStartDate!")
       let firstElement = imageFileData[0]
-      let dateFirstImage: Date = self.getSelectedDate(dateFromSelector, metaData: firstElement)
+      let dateFirstImage: Date = self.getSelectedDate(selectedRow, metaData: firstElement)
       print("dateFirstImage: \(dateFirstImage)")
       offset += newStartDate.dateValue.timeIntervalSince(dateFirstImage)
     }
@@ -166,11 +167,14 @@ class ViewController: NSViewController {
     var dateStrings : Array<String> = []
     let count = imageFileData.count
     var current : Int = 1
+    let addPostfix = self.postfix.stringValue != ""
+    let postFix = self.postfix.stringValue
+    let appendOriginalName = self.appendOriginalName.state.rawValue == 1
     DispatchQueue.global(qos: .background).async(execute: {
       // iterate over images
       for image:ImageFileMetaData in self.imageFileData {
         var counter : Int = 1
-        let baseDate: Date = self.getSelectedDate(self.dateFromSelector, metaData: image)
+        let baseDate: Date = self.getSelectedDate(selectedRow, metaData: image)
         let date = baseDate.addingTimeInterval(offset)
         let baseName = date.formattedString()
         // ensure name is unique if we have files with same date
@@ -182,11 +186,11 @@ class ViewController: NSViewController {
         }
         dateStrings.append(newFileName)
         // add postfix
-        if (self.postfix.stringValue != "") {
-          newFileName += "_\(self.postfix.stringValue)"
+        if (addPostfix) {
+          newFileName += "_\(postFix)"
         }
         // append original name
-        if (self.appendOriginalName.state.rawValue == 1) {
+        if (appendOriginalName) {
           let nameWOExtension : String = image.url.deletingPathExtension().lastPathComponent
           // remove potential previous original file name
           let start = nameWOExtension.startIndex
@@ -258,7 +262,9 @@ class ViewController: NSViewController {
           }
         }
         //
-        self.progressIndicator.doubleValue = 100 * (Double(current) / Double(count))
+        DispatchQueue.main.async {
+          self.progressIndicator.doubleValue = 100 * (Double(current) / Double(count))
+        }
         current = current + 1
       }
       DispatchQueue.main.async(execute: {
@@ -280,7 +286,8 @@ class ViewController: NSViewController {
     if (useNewStartDate.state.rawValue == 1 && imageFileData.count > 0) {
       print("we have a newStartDate!")
       let firstElement = imageFileData[0]
-      let dateFirstImage: Date = self.getSelectedDate(dateFromSelector, metaData: firstElement)
+      let selectedRow = dateFromSelector.selectedRow
+      let dateFirstImage: Date = self.getSelectedDate(selectedRow, metaData: firstElement)
       print("dateFirstImage: \(dateFirstImage)")
       offset += newStartDate.dateValue.timeIntervalSince(dateFirstImage)
     }
@@ -289,7 +296,8 @@ class ViewController: NSViewController {
     DispatchQueue.global(qos: .background).async(execute: {
       // iterate over images
       for image:ImageFileMetaData in self.imageFileData {
-        let baseDate: Date = self.getSelectedDate(self.dateFromSelector, metaData: image)
+        let selectedRow = self.dateFromSelector.selectedRow
+        let baseDate: Date = self.getSelectedDate(selectedRow, metaData: image)
         let date = baseDate.addingTimeInterval(offset)
         Utils.setDateTime(image.url, date: date)
         let updatedImageFile = ImageFileMetaData(
@@ -301,7 +309,9 @@ class ViewController: NSViewController {
           url: image.url
         )
         processedImageFileData.append(updatedImageFile)
-        self.progressIndicator.doubleValue = 100 * (Double(current) / Double(count))
+        DispatchQueue.main.async {
+          self.progressIndicator.doubleValue = 100 * (Double(current) / Double(count))
+        }
         current = current + 1
       }
       DispatchQueue.main.async(execute: {
@@ -312,17 +322,17 @@ class ViewController: NSViewController {
     })
   }
   
-  fileprivate func getSelectedDate(_ dateFromSelector:NSMatrix, metaData:ImageFileMetaData) -> Date {
-    switch (dateFromSelector.selectedRow, metaData.fileNameDate) {
-    case (0, _):
-      return metaData.imageDate as Date
-    case (1, _):
-      return metaData.fileDate as Date
-    case (2, .some(let fileNameDate)):
-      return fileNameDate as Date
-    default:
-      return metaData.imageDate as Date
-    }
+  fileprivate func getSelectedDate(_ selectedRow:Int, metaData:ImageFileMetaData) -> Date {
+      switch (selectedRow, metaData.fileNameDate) {
+      case (0, _):
+        return metaData.imageDate as Date
+      case (1, _):
+        return metaData.fileDate as Date
+      case (2, .some(let fileNameDate)):
+        return fileNameDate as Date
+      default:
+        return metaData.imageDate as Date
+      }
 
   }
   
@@ -331,7 +341,7 @@ class ViewController: NSViewController {
     progressIndicator.doubleValue = 1
     progressIndicator.startAnimation(self)
     //
-    let contents : [URL]
+    var contents : [URL]
     do {
       contents = try fm.contentsOfDirectory(at: imageFolder!,
                                             includingPropertiesForKeys: [URLResourceKey.creationDateKey],
@@ -384,6 +394,7 @@ class ViewController: NSViewController {
         self.imageFileData.append(imageFile)
         // print("imageFileData.append \(fileName)")
         DispatchQueue.main.async {
+          // update progress bar
           self.progressIndicator.doubleValue = progress
         }
       }
@@ -418,8 +429,10 @@ class ViewController: NSViewController {
       for image:ImageFileMetaData in self.imageFileData {
         Utils.resizeImage(image.url, max: size, destinationPath:"\(destinationDirPath!)/\(image.name)")
         print("resized \(destinationDirPath!)/\(image.name)")
-        // update progress bar
-        self.progressIndicator.doubleValue = 100 * (Double(current) / Double(count))
+        DispatchQueue.main.async {
+          // update progress bar
+          self.progressIndicator.doubleValue = 100 * (Double(current) / Double(count))
+        }
         current = current + 1
       }
       if (renameNumbered) {
