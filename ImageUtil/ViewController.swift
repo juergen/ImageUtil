@@ -364,7 +364,7 @@ class ViewController: NSViewController {
         let progressFormatted: String  = progress.format(".1")
         // do we have an image?
         let pathExtension : String = url.pathExtension
-        if !["jpeg", "jpg", "cr2"].contains(pathExtension.lowercased()) {
+        if !["jpeg", "jpg", "cr2", "heic"].contains(pathExtension.lowercased()) {
           // ensure that progress indicator is also updated
           DispatchQueue.main.async {
             self.progressIndicator.doubleValue = progress
